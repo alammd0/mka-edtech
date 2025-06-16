@@ -28,10 +28,10 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    AccountType: {
+    accountType: {
       type: String,
       default: "USER",
-      enum: ["USER", "INSTRUCTORS"],
+      enum: ["USER", "INSTRUCTOR"],
     },
 
     courses: [{ type: mongoose.Types.ObjectId , 

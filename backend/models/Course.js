@@ -17,7 +17,7 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
 
-    thumnail: {
+    thumbnail: {
       type: String,
       required: true,
     },
@@ -37,7 +37,7 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
 
-    intruction: {
+    instruction: {
       type: String,
       required: true,
     },
@@ -58,7 +58,17 @@ const courseSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    
+
+    createBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User"
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+
   },
   { timestamps: true }
 );

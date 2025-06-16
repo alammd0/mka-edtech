@@ -99,8 +99,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // comparePasswor
-    // Assuming `exist` is the user fetched from DB using email
+    // compare password
     const comparePassword = await bcrypt.compare(password, exist.password);
 
     if (!comparePassword) {
@@ -114,7 +113,7 @@ exports.login = async (req, res) => {
     const payload = {
       id: exist._id,
       name: exist.firstName + " " + exist.lastName,
-      accountType: exist.AccountType,
+      accountType: exist.accountType,
       email: exist.email,
     };
 
@@ -122,7 +121,7 @@ exports.login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    // set toeken in user
+    // set token in user
     exist.password = undefined;
     exist.token = token;
 
