@@ -8,11 +8,6 @@ dotenv.config();
 // create Course
 exports.createcourse = async (req, res) => {
   try {
-    // console.log(req);
-
-    // console.log("Request Body - " ,  req.body);
-    // console.log(req.files.thumbnail);
-
     let { title, description, price, category, tag, whatWeLearn, instruction } =
       req.body;
 
@@ -115,7 +110,7 @@ exports.updatecourse = async (req, res) => {
     let { title, description, price, category, tag, whatWeLearn, instruction } =
       req.body;
 
-    const thumbnail = req.files.thumbnail;
+    const thumbnail = req.files?.thumbnail;
 
     // find user id;
     const userId = req.user.id;
@@ -187,13 +182,9 @@ exports.updatecourse = async (req, res) => {
       });
     }
 
-    const updatedCourse = await Course.findByIdAndUpdate(
-      id,
-      updateCourse,
-      {
-        new: true,
-      }
-    );
+    const updatedCourse = await Course.findByIdAndUpdate(id, updateCourse, {
+      new: true,
+    });
 
     if (!updatedCourse) {
       return res.status(401).json({
@@ -219,32 +210,32 @@ exports.updatecourse = async (req, res) => {
 // get-all Course
 exports.getallscourses = async (req, res) => {
   try {
-
     const courseDetails = await Course.find(
-        {},
-        {
-            title : true,
-            price : true,
-            thumbnail : true,
-            createBy : true,
-            ratingAndReview : true,
-            studentEnrollment : true
-        }
-    ).populate("createBy", "firstName lastName email").exec();
+      {},
+      {
+        title: true,
+        price: true,
+        thumbnail: true,
+        createBy: true,
+        ratingAndReview: true,
+        studentEnrollment: true,
+      }
+    )
+      .populate("createBy", "firstName lastName email")
+      .exec();
 
-    if(!courseDetails){
-        return res.status(401).json({
-            success : false,
-            message : "Not Courses Found"
-        })
+    if (!courseDetails) {
+      return res.status(401).json({
+        success: false,
+        message: "Not Courses Found",
+      });
     }
 
     return res.status(200).json({
-        success : true,
-        message : "Courses fetch Successfully...",
-        data : courseDetails
-    })
-
+      success: true,
+      message: "Courses fetch Successfully...",
+      data: courseDetails,
+    });
   } catch (error) {
     console.log(error);
     return res.status(404).json({
@@ -254,9 +245,33 @@ exports.getallscourses = async (req, res) => {
   }
 };
 
+// Not test
 // get-single course
 exports.getcoursedetails = async (req, res) => {
   try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(401).json({
+        success: false,
+        message: "Course Id Not Provide please Provide....",
+      });
+    }
+
+    const course = await Course.findById(id);
+
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course Details Not Found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Course Details are fetch Succussfully...",
+      data: course,
+    });
   } catch (err) {
     console.log(err);
     return res.status(404).json({
@@ -269,6 +284,66 @@ exports.getcoursedetails = async (req, res) => {
 // Delete Course
 exports.deletecourse = async (req, res) => {
   try {
+    // fetch course id in parameter
+    const { id } = req.params;
+
+    // find user id;
+    const userId = req.user.id;
+
+    // check course is valid or not
+    if (!id) {
+      return res.status(401).json({
+        success: false,
+        message: "Please provide Valid Course....",
+      });
+    }
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Not Found User Id",
+      });
+    }
+
+    // find account types
+    const user = await User.findById(userId);
+
+    if (!user || user.accountType !== "INSTRUCTOR") {
+      return res.status(401).json({
+        success: false,
+        message: "User details Not Found",
+      });
+    }
+
+    // find course and delete
+    const courseDelete = await Course.findByIdAndDelete(id);
+
+    if (!courseDelete) {
+      return res.status(401).json({
+        success: false,
+        message: "Not Valid course Are Available",
+      });
+    }
+
+    // also update user because you deleted a course
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: {
+          courses: courseDelete._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    // then return response
+    return res.status(201).json({
+      success: true,
+      message: "Course delete successfully...",
+    });
+    
   } catch (error) {
     console.log(error);
     return res.status(400).json({

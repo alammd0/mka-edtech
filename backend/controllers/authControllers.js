@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Profile = require("../models/Profile");
 require("dotenv").config();
 
 // signup
@@ -53,6 +54,14 @@ exports.signup = async (req, res) => {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // create User Profiles also
+      const profileDetails = await Profile.create({
+        dob: null,
+        about: null,
+        profilePic: null,
+        gender: null,
+      });
+
       // Create user
       const newUser = await User.create({
         firstName,
@@ -61,6 +70,7 @@ exports.signup = async (req, res) => {
         phone,
         password: hashedPassword,
         accountType,
+        profile: profileDetails.id,
       });
 
       return res.status(200).json({
@@ -149,7 +159,7 @@ exports.login = async (req, res) => {
 // get User
 exports.getuser = async (req, res) => {
   try {
-    const userId = req.user.id; 
+    const userId = req.user.id;
     const findUser = await User.findById(userId).select("-password");
 
     if (!findUser) {

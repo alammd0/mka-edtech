@@ -19,7 +19,7 @@ router.put("/update-course/:id", authentication, instructormiddleware, updatecou
 router.delete("/delete-course/:id", authentication, instructormiddleware, deletecourse);
 
 // access by only user and instructor
-router.get("/get-all-courses", authentication, getallscourses);
-router.get("/get-course-details", authentication, getcoursedetails);
+router.get("/get-all-courses", getallscourses);
+router.get("/get-course-details/:id", getcoursedetails);
 
 module.exports = router;

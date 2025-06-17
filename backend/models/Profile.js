@@ -5,10 +5,12 @@ const profileSchema = new mongoose.Schema(
     dob: {
       type: Date,
     },
+
     about: {
       type: String,
-      maxlength: 500,
+      max_length: 500,
     },
+
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
@@ -20,9 +22,9 @@ const profileSchema = new mongoose.Schema(
 
     user: {
       type: mongoose.Types.ObjectId,
-      ref: "User",
-      required: true,
+      ref: "User"
     },
+
   },
   { timestamps: true }
 );
