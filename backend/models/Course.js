@@ -42,15 +42,19 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
 
-    section: {
-      type: mongoose.Types.ObjectId,
-      ref: "Section",
-    },
+    section: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Section",
+      },
+    ],
 
-    ratingAndReview: {
-      type: mongoose.Types.ObjectId,
-      ref: "RatingAndReview",
-    },
+    ratingAndReview: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "RatingAndReview",
+      },
+    ],
 
     studentEnrollment: [
       {
@@ -61,14 +65,13 @@ const courseSchema = new mongoose.Schema(
 
     createBy: {
       type: mongoose.Types.ObjectId,
-      ref: "User"
+      ref: "User",
     },
 
     createdAt: {
       type: Date,
       default: Date.now,
     },
-
   },
   { timestamps: true }
 );

@@ -10,6 +10,8 @@ const DbConnection = require("./config/db");
 const autheRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const sectionRoutes = require("./routes/sectionRoutes");
+const subsectionRoutes = require("./routes/subSectionRoutes");
 
 const app = express();
 
@@ -31,6 +33,8 @@ DbConnection();
 app.use("/api/v1/auth", autheRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/category", categoryRoutes)
+app.use("/api/v1/section", sectionRoutes);
+app.use("/api/v1/subsection", subsectionRoutes)
 
 app.listen(PORT, () => {
   console.log(`App Running at : ${PORT}`);

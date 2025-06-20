@@ -5,6 +5,12 @@ const subSectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
+  description : {
+    type : String, 
+    required : true
+  },
+
   timeDuration: {
     type: String,
     default: "0:00", // optional default value

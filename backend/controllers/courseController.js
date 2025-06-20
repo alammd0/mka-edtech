@@ -245,7 +245,7 @@ exports.getallscourses = async (req, res) => {
   }
 };
 
-// Not test
+
 // get-single course
 exports.getcoursedetails = async (req, res) => {
   try {
