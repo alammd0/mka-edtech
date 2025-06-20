@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Course = require("../models/Course");
-const { UploadToCloudinary } = require("../utils/Upload");
+const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload");
 const Category = require("../models/Category");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -61,7 +61,7 @@ exports.createcourse = async (req, res) => {
 
     // upload image on Cloudinary
     const folder = process.env.CLOUDINARY_FOLDER_NAME;
-    const imageUpload = await UploadToCloudinary(folder, thumbnail);
+    const imageUpload = await uploadImageToCloudinary(folder, thumbnail);
 
     // create Course
     const createNewCourse = await Course.create({
@@ -284,6 +284,7 @@ exports.getcoursedetails = async (req, res) => {
 // Delete Course
 exports.deletecourse = async (req, res) => {
   try {
+    
     // fetch course id in parameter
     const { id } = req.params;
 
@@ -330,7 +331,7 @@ exports.deletecourse = async (req, res) => {
       userId,
       {
         $pull: {
-          courses: courseDelete._id,
+          courses: id,
         },
       },
       {

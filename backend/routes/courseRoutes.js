@@ -10,16 +10,51 @@ const {
     getcoursedetails, 
     deletecourse } = require("../controllers/courseController");
 
-const router = express.Router();
+const {
+    createSection,
+    updateSection,
+    deleteSection } = require("../controllers/sectionController");
 
+const {
+    createSubsection,
+    updateSubSection,
+    deleteSubsection } = require("../controllers/subSectionControllers");
+
+const {
+    createcategory
+} = require("../controllers/categoryController");
+
+
+const router = express.Router();
 
 // access by only instructor
 router.post("/create-course", authentication, instructormiddleware, createcourse);
 router.put("/update-course/:id", authentication, instructormiddleware, updatecourse);
 router.delete("/delete-course/:id", authentication, instructormiddleware, deletecourse);
 
+
 // access by only user and instructor
 router.get("/get-all-courses", getallscourses);
 router.get("/get-course-details/:id", getcoursedetails);
+
+
+// section create part 
+router.post("/create-section", authentication, instructormiddleware, createSection);
+router.put("/update-section", authentication, instructormiddleware, updateSection);
+router.delete("/delete-section/:sectionId", authentication, instructormiddleware, deleteSection);
+
+// sub-section parts
+router.post("/create-sub-section", authentication, instructormiddleware, createSubsection);
+router.put("/update-sub-section", authentication, instructormiddleware, updateSubSection);
+router.delete("/delete-sub-section", authentication, instructormiddleware, deleteSubsection);
+
+router.post(
+  "/create-category",
+  authentication,
+  instructormiddleware,
+  createcategory
+);
+
+
 
 module.exports = router;

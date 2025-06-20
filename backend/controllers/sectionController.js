@@ -90,7 +90,7 @@ exports.deleteSection = async (req, res) => {
             })
         }
 
-        const deleteSection = await Section.findByIdAndDelete({sectionId});
+        const deleteSection = await Section.findByIdAndDelete({_id : sectionId});
         console.log("Delete Section name - ", deleteSection);
 
         await Course.updateMany(

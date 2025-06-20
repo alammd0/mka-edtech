@@ -5,7 +5,7 @@ const subSectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
+
   description : {
     type : String, 
     required : true
@@ -13,12 +13,13 @@ const subSectionSchema = new mongoose.Schema({
 
   timeDuration: {
     type: String,
-    default: "0:00", // optional default value
+    default: "0:00", 
   },
+
   videoURL: {
     type: String,
-    required: true,  // recommend making it required if each subsection must have a video
+    required: true, 
   },
-}, { timestamps: true }); // optional but helpful
+}, { timestamps: true }); 
 
 module.exports = mongoose.model("SubSection", subSectionSchema);
