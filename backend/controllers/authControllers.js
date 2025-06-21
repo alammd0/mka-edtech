@@ -160,7 +160,7 @@ exports.login = async (req, res) => {
 exports.getuser = async (req, res) => {
   try {
     const userId = req.user.id;
-    const findUser = await User.findById(userId).select("-password");
+    const findUser = await User.findById(userId).select("-password").populate("profile").exec();
 
     if (!findUser) {
       return res.status(401).json({
@@ -179,6 +179,60 @@ exports.getuser = async (req, res) => {
     return res.status(503).json({
       message: "User not Fetch Successfully..",
       success: false,
+    });
+  }
+};
+
+// forget-password
+exports.forgetPassword = async (req, res) => {
+  try {
+    const { email, newPassword, confirmNewPassword } = req.body;
+
+    if (!email || !newPassword || !confirmNewPassword) {
+      return res.status(402).json({
+        success: false,
+        message: "All field required...",
+      });
+    }
+
+    // check exits or not
+    const existingUser = await User.findOne({ email: email });
+
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not found...",
+      });
+    }
+
+    // check newPassword and conformNewPassword
+    if (newPassword !== confirmNewPassword) {
+      return res.status(404).json({
+        success: false,
+        message: "Password not Match...",
+      });
+    }
+
+    // hashed new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    // console.log("Hased password - ", hashedNewPassword);
+
+    // then update user with newPassword
+    const updatedPassword = await User.updateOne(
+      { email : existingUser.email},
+      { password: hashedNewPassword }
+    );
+
+    // return
+    return res.status(200).json({
+      success: true,
+      message: "Password Update Success",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(502).json({
+      success: false,
+      message: "Password Change error, Please Check...",
     });
   }
 };

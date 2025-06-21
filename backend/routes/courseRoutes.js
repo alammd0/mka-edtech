@@ -21,7 +21,8 @@ const {
     deleteSubsection } = require("../controllers/subSectionControllers");
 
 const {
-    createcategory
+    createcategory,
+    getallcategory
 } = require("../controllers/categoryController");
 
 
@@ -54,6 +55,8 @@ router.post(
   instructormiddleware,
   createcategory
 );
+
+router.get("/get-category", getallcategory)
 
 
 

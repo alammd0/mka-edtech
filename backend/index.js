@@ -10,6 +10,7 @@ const DbConnection = require("./config/db");
 // import route
 const autheRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 
 const app = express();
 
@@ -32,6 +33,7 @@ cloudinaryConnect();
 // create Route here
 app.use("/api/v1/auth", autheRoutes);
 app.use("/api/v1/course", courseRoutes);
+app.use("/api/v1/profile", profileRoutes);
 
 
 
