@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { HomePageExplore } from "../../../data/homepage-explore"; // Update the path
+import { HomePageExplore } from "../../../data/homepage-explore"; 
 
 const ExploreSection = () => {
-  const [activeTab, setActiveTab] = useState(HomePageExplore[0].tag); // Default: first tab
+  const [activeTab, setActiveTab] = useState(HomePageExplore[0].tag); 
 
   const activeCourses =
     HomePageExplore.find((section) => section.tag === activeTab)?.courses || [];
@@ -14,7 +14,7 @@ const ExploreSection = () => {
         {HomePageExplore.map((section, index) => (
           <button
             key={index}
-            className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-md font-medium transition-all duration-300 font-inter ${
               activeTab === section.tag
                 ? "bg-richblack-800 text-white px-4 py-2"
                 : ""
@@ -31,7 +31,7 @@ const ExploreSection = () => {
         {activeCourses.map((course, i) => (
           <div
             key={i}
-            className="bg-richblack-100 p-5 rounded-lg shadow-md border border-gray-200 hover:shadow-lg"
+            className="bg-richblack-100 p-5 rounded-lg shadow-md border border-gray-200 hover:shadow-lg font-inter"
           >
             <h3 className="text-xl font-semibold text-indigo-700 mb-2">
               {course.heading}

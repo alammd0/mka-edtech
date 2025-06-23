@@ -9,13 +9,13 @@ const YourCoding = ({ txt1, hText, txt2, para, btn1, btn2 }) => {
       <div className="flex flex-col gap-6">
 
         <div className="flex gap-2 flex-col">
-          <p className="flex  text-3xl font-bold gap-2 capitalize">
+          <p className="flex  text-3xl font-bold gap-2 capitalize font-inter">
             {txt1} <HeighLight text={hText} />{" "}
           </p>
-          <p className=" text-3xl font-bold gap-2 capitalize">{txt2}</p>
+          <p className=" text-3xl font-bold gap-2 capitalize font-inter">{txt2}</p>
         </div>
 
-        <div className="tex-[16px] text-richblack-300 font-medium">
+        <div className="tex-[16px] text-richblack-300 font-medium font-inter">
           <p>{para}</p>
         </div>
 
