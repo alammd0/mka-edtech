@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema(
 
     accountType: {
       type: String,
-      default: "USER",
-      enum: ["USER", "INSTRUCTOR"],
+      default: "Student",
+      enum: ["Student", "Instructor"],
     },
 
     courses: [{ type: mongoose.Types.ObjectId , 

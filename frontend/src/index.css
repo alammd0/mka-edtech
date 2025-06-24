@@ -27,6 +27,13 @@ body {
   box-shadow: rgba(158, 156, 156, 0.4) 0px 2px 4px, rgba(162, 161, 161, 0.3) 0px 7px 13px -3px, rgba(164, 162, 162, 0.2) 0px -3px 0px inset;
 }
 
+.gradient-text {
+  background: linear-gradient(117.95deg, #833AB4 -2.4%, #FD1D1D 52.25%, #FCB045 106.89%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
 @theme {
   --font-inter: "Inter", sans-serif;
   --font-edu-sa: "Edu SA Beginner", cursive;

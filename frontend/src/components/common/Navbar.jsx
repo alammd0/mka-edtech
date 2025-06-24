@@ -1,14 +1,17 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { getallcategory } from "../../services/opreation/categoryAPI";
 import { Link, NavLink } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropdown";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -42,13 +45,23 @@ const Navbar = () => {
           </NavLink>
 
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button
-              type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Get started
-            </button>
+            {isLoginPage ? (
+              <Link
+                to="/signup"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Get started
+              </Link>
+            ) : isSignupPage ? (
+              <Link
+                to="/login"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Login
+              </Link>
+            ) : null}
           </div>
+
           <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-sticky"
