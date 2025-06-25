@@ -7,14 +7,16 @@ require("dotenv").config();
 // signup
 exports.signup = async (req, res) => {
   try {
+
+    // console.log("Req ki Data - ",  req.body);
+
     const {
       firstName,
       lastName,
       email,
       password,
-      conformPassword,
-      accountType,
-      phone,
+      confirmPassword,
+      accountType
     } = req.body;
 
     // check input not missing
@@ -23,9 +25,8 @@ exports.signup = async (req, res) => {
       !lastName ||
       !email ||
       !password ||
-      !conformPassword ||
-      !accountType ||
-      !phone
+      !confirmPassword ||
+      !accountType
     ) {
       return res.status(404).json({
         success: false,
@@ -44,7 +45,7 @@ exports.signup = async (req, res) => {
     }
 
     if (password.length >= 5 && password.length <= 9) {
-      if (password !== conformPassword) {
+      if (password !==  confirmPassword) {
         return res.status(502).json({
           success: false,
           message: "Passwords do not match.",
@@ -60,6 +61,7 @@ exports.signup = async (req, res) => {
         about: null,
         profilePic: null,
         gender: null,
+        phone : null
       });
 
       // Create user
@@ -67,7 +69,6 @@ exports.signup = async (req, res) => {
         firstName,
         lastName,
         email,
-        phone,
         password: hashedPassword,
         accountType,
         profile: profileDetails.id,
@@ -79,6 +80,7 @@ exports.signup = async (req, res) => {
         data: newUser,
       });
     }
+
   } catch (error) {
     console.log(error);
     return res.status(503).json({

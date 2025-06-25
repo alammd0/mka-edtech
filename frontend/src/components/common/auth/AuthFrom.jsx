@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import { countryCode } from "../../../data/countrycode";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { login, signup } from "../../../services/opreation/authAPI";
+import { setToken, setUser } from "../../../app/slice/authSlice";
 
 const AuthForm = ({ type }) => {
   const [accountType, setAccountType] = useState("Student");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [infoData, setInfoData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
-    countryCode: "",
     accountType: "Student",
   });
 
@@ -32,26 +40,73 @@ const AuthForm = ({ type }) => {
     }));
   };
 
+  const submitHandlersData = async (e) => {
+    e.preventDefault();
+    // console.log("Info Data - ", infoData);
+    if (type === "signup") {
+      const toastId = toast.loading("Please wait...");
+      try {
+        const response = await signup(infoData);
+        // console.log(response);
+
+        console.log("Singup Data - ", response);
+
+         if (!response) {
+          throw new Error("Not response..");
+        }
+        dispatch(setUser(response.data));
+        toast.success("User singup Success");
+        navigate("/login");
+      } catch (err) {
+        toast.error("Signup Failed");
+      }
+      toast.dismiss(toastId);
+    } else {
+      const toastId = toast.loading("Please wait...");
+      try {
+        const response = await login(infoData);
+        console.log("response - ", response);
+        if (!response) {
+          throw new Error("Not response..");
+        }
+        dispatch(setUser(response.data));
+        dispatch(setToken(response.token));
+        toast.success("User Login Success");
+        navigate("/");
+      } catch (err) {
+        toast.error("Login Failed");
+      }
+      toast.dismiss(toastId);
+    }
+  };
+  
+  console.log("Error" , infoData);
+
   return (
-    <div className="text-white space-y-6">
-      {/* Header */}
+    <div className="md:w-[50%] text-white space-y-4">
       <div>
         {type === "login" ? (
-          <div>
-            <h3 className="text-2xl font-bold">Welcome Back</h3>
-            <p>
-              Build skills for today, tomorrow, and beyond. Education to
-              future-proof your career.
+          <div className="flex flex-col gap-2">
+            <h3 className="text-2xl font-bold font-inter capitalize">
+              Welcome Back
+            </h3>
+            <p className="font-[16px] font-inter text-richblack-300">
+              Build skills for today, tomorrow, and beyond.{" "}
+              <i className="text-blue-600">
+                Education to future-proof your career.
+              </i>
             </p>
           </div>
         ) : (
-          <div>
-            <h3 className="text-2xl font-bold">
-              Join the millions learning to code with StudyNotion for free
+          <div className="flex flex-col gap-2">
+            <h3 className="text-2xl font-bold font-inter capitalize">
+              Join the millions learning to code with Edtech for free
             </h3>
-            <p>
-              Build skills for today, tomorrow, and beyond. Education to
-              future-proof your career.
+            <p className="font-[16px] font-inter text-richblack-300">
+              Build skills for today, tomorrow, and beyond.{" "}
+              <i className="text-blue-600">
+                Education to future-proof your career.
+              </i>
             </p>
           </div>
         )}
@@ -59,7 +114,7 @@ const AuthForm = ({ type }) => {
 
       {/* Account Type Buttons */}
       {type === "signup" && (
-        <div className="flex gap-4">
+        <div className="flex gap-3 bg-richblack-800 w-fit px-4 py-2 rounded-2xl">
           <button
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
               accountType === "Student"
@@ -70,6 +125,7 @@ const AuthForm = ({ type }) => {
           >
             Student
           </button>
+
           <button
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
               accountType === "Instructor"
@@ -84,10 +140,13 @@ const AuthForm = ({ type }) => {
       )}
 
       {/* Form */}
-      <form className="space-y-4">
+      <form
+        onSubmit={submitHandlersData}
+        className="space-y-3 text-richblack-300"
+      >
         {type === "signup" && (
-          <div className="flex gap-4">
-            <div className="flex-1">
+          <div className="flex gap-2 font-inter text-richblack-300">
+            <div className="flex gap-1 text-richblack-300 flex-col w-full font-inter">
               <label htmlFor="firstName">
                 First Name <span className="text-red-500">*</span>
               </label>
@@ -103,7 +162,7 @@ const AuthForm = ({ type }) => {
               />
             </div>
 
-            <div className="flex-1">
+            <div className="flex gap-1 flex-col w-full">
               <label htmlFor="lastName">
                 Last Name <span className="text-red-500">*</span>
               </label>
@@ -122,7 +181,7 @@ const AuthForm = ({ type }) => {
         )}
 
         {/* Email */}
-        <div>
+        <div className="flex gap-1 flex-col w-full font-inter">
           <label htmlFor="email">
             Email <span className="text-red-500">*</span>
           </label>
@@ -138,88 +197,88 @@ const AuthForm = ({ type }) => {
           />
         </div>
 
-        {/* Phone Number */}
-        {type === "signup" && (
-          <div>
-            <label htmlFor="phone" className="text-sm font-medium">
-              Phone Number <span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2">
-              <select
-                name="countryCode"
-                value={infoData.countryCode}
-                onChange={handleChange}
-                className="bg-slate-800 w-[30%] text-white px-3 py-2 rounded-md border border-slate-600"
-              >
-                {countryCode.map((code, index) => (
-                  <option key={index} value={code.code}>
-                    {code.code} - {code.country}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                placeholder="Your Phone Number"
-                value={infoData.phone}
-                onChange={handleChange}
-                required
-                className="flex-1 bg-slate-800 text-white px-3 py-2 rounded-md border border-slate-600"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Password */}
-        <div>
-          <label htmlFor="password">
-            Password <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            id="password"
-            name="password"
-            value={infoData.password}
-            onChange={handleChange}
-            required
-            className="w-full bg-slate-800 text-white px-3 py-2 rounded-md border border-slate-600"
-          />
-        </div>
-
-        {/* Confirm Password */}
-        {type === "signup" && (
-          <div>
-            <label htmlFor="confirmPassword">
-              Confirm Password <span className="text-red-500">*</span>
+        <div className="flex gap-2">
+          <div
+            className={`relative flex gap-1 flex-col ${
+              type === "signup" ? "w-[100%]" : "w-full"
+            } font-inter`}
+          >
+            <label htmlFor="password">
+              Password <span className="text-red-500">*</span>
             </label>
             <input
-              type="password"
-              placeholder="Re-enter password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={infoData.confirmPassword}
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              id="password"
+              name="password"
+              value={infoData.password}
               onChange={handleChange}
               required
               className="w-full bg-slate-800 text-white px-3 py-2 rounded-md border border-slate-600"
             />
+
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-[40px] cursor-pointer text-white"
+            >
+              {showPassword ? "👁️" : "🙈"}
+            </span>
+
+            {type === "login" && (
+              <div className="text-right mt-2 text-blue-400 font-inter text-[16px]">
+                <Link to="/forget-password">Forget password</Link>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Only render this on signup */}
+          {type === "signup" && (
+            <div className=" relative flex gap-1 flex-col w-full font-inter">
+              <label htmlFor="confirmPassword">
+                Confirm Password <span className="text-red-500">*</span>
+              </label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Re-enter password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={infoData.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full bg-slate-800 text-white px-3 py-2 rounded-md border border-slate-600"
+              />
+
+              <span
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-[40px] cursor-pointer text-white"
+              >
+                {showConfirmPassword ? "👁️" : "🙈"}
+              </span>
+            </div>
+          )}
+        </div>
 
         {/* Submit Button */}
         <div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md"
+            className="w-full bg-yellow-50  hover:bg-yellow-400 text-white py-2 rounded-md text-xl font-inter"
           >
             {type === "login" ? "Log In" : "Sign Up"}
           </button>
         </div>
+
+        <div className="text-[16px] font-inter text-center text-yellow-500">
+          {type === "login" ? (
+            <Link to="/signup">Don't Have an account</Link>
+          ) : (
+            <Link to="/login">I have an account account</Link>
+          )}
+        </div>
       </form>
     </div>
   );
+
 };
 
 export default AuthForm;

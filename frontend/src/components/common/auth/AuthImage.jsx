@@ -5,11 +5,9 @@ import Signup from "../../../assets/Images/signup.webp";
 
 const AuthImage = ({ type }) => {
   return (
-    <div>
-      <div>
-        {type === "signup" && <img src={Signup} alt="Signup" />}
-        {type === "login" && <img src={Login} alt="Login" />}
-      </div>
+    <div className="md:w-[50%] w-full">
+      {type === "signup" && <img className="rounded-2xl shadow-2xl shadow-richblack-800" src={Signup} alt="Signup" />}
+      {type === "login" && <img className="rounded-2xl shadow-2xl shadow-richblack-800" src={Login} alt="Login" />}
     </div>
   );
 };

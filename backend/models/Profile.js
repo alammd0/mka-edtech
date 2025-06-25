@@ -11,21 +11,25 @@ const profileSchema = new mongoose.Schema(
       max_length: 500,
     },
 
+    phone: {
+      type: Number,
+    },
+
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
     },
-    
+
     profilePic: {
       type: String,
     },
 
     user: {
       type: mongoose.Types.ObjectId,
-      ref: "User"
+      ref: "User",
     },
-
   },
+  
   { timestamps: true }
 );
 

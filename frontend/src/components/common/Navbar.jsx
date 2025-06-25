@@ -5,13 +5,15 @@ import { getallcategory } from "../../services/opreation/categoryAPI";
 import { Link, NavLink } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropdown";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-  const isSignupPage = location.pathname === "/signup";
+  const token = useSelector((state) => state.auth.token);
+  console.log(token);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -44,23 +46,34 @@ const Navbar = () => {
             </span>
           </NavLink>
 
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {isLoginPage ? (
+          {token === null ? (
+            <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+              {isLoginPage ? (
+                <Link
+                  to="/signup"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Get Started
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
+          ) : (
+            <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
               <Link
-                to="/signup"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                to="/dashboard"
+                className="text-white bg-yellow-25 hover:bg-yellow-300 focus:ring-2 focus:outline-none focus:bg-yellow-50 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-yellow-50 dark:hove:bg-yellow-100"
               >
-                Get started
+                Dashboard
               </Link>
-            ) : isSignupPage ? (
-              <Link
-                to="/login"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Login
-              </Link>
-            ) : null}
-          </div>
+            </div>
+          )}
 
           <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
