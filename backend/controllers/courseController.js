@@ -12,6 +12,7 @@ exports.createcourse = async (req, res) => {
       req.body;
 
     const thumbnail = req.files.thumbnail;
+    console.log(thumbnail);
 
     // find user id;
     const userId = req.user.id;
@@ -52,7 +53,7 @@ exports.createcourse = async (req, res) => {
     // find account types
     const user = await User.findById(userId);
 
-    if (!user || user.accountType !== "INSTRUCTOR") {
+    if (!user || user.accountType !== "Instructor") {
       return res.status(401).json({
         success: false,
         message: "User details Not Found",
@@ -175,7 +176,7 @@ exports.updatecourse = async (req, res) => {
     // find account types
     const user = await User.findById(userId);
 
-    if (!user || user.accountType !== "INSTRUCTOR") {
+    if (!user || user.accountType !== "Instructor") {
       return res.status(401).json({
         success: false,
         message: "User details Not Found",
@@ -244,7 +245,6 @@ exports.getallscourses = async (req, res) => {
     });
   }
 };
-
 
 // get-single course
 exports.getcoursedetails = async (req, res) => {

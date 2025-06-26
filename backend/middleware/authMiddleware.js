@@ -4,6 +4,9 @@ require("dotenv").config();
 
 exports.authentication = async (req, res, next) => {
   try {
+
+    // console.log(req.cookies?.token);
+
     const token =
       req.body?.token ||
       req.header("Authorization")?.replace("Bearer ", "") ||
@@ -58,7 +61,7 @@ exports.instructormiddleware = async (req, res, next) => {
 
     console.log(user)
 
-    if (user.accountType !== "INSTRUCTOR") {
+    if (user.accountType !== "Instructor") {
       return res.status(503).json({
         success: false,
         message: "Access Denied: Only instructors can access this route",
@@ -86,7 +89,7 @@ exports.usermiddleware = async (req, res, next) => {
       });
     }
 
-    if (user.accountType !== "USER") {
+    if (user.accountType !== "Student") {
       return res.status(503).json({
         success: false,
         message: "Access Denied: Only User can access this route",
