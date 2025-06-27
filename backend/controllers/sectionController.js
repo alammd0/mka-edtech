@@ -51,12 +51,15 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
     try{
 
-        const {sectionName, sectionId} = req.body ; 
+        const {updatedName, sectionId} = req.body ; 
+
+        console.log("Section Name - ", updatedName);
+        console.log("SectionId = ", sectionId);
 
         const section = await Section.findByIdAndUpdate(
             sectionId,
             {
-                sectionName : sectionName
+                sectionName : updatedName
             },
             {new : true}
         )
@@ -81,7 +84,9 @@ exports.updateSection = async (req, res) => {
 exports.deleteSection = async (req, res) => {
     try{
 
-        const { sectionId } = req.params ; 
+        const { sectionId } = req.params
+        console.log("Section Id -  ", sectionId);
+
 
         if(!sectionId){
             return res.status(402).json({
@@ -92,6 +97,7 @@ exports.deleteSection = async (req, res) => {
 
         const deleteSection = await Section.findByIdAndDelete({_id : sectionId});
         console.log("Delete Section name - ", deleteSection);
+
 
         await Course.updateMany(
             {section : sectionId},

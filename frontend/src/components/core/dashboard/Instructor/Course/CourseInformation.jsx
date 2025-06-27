@@ -4,8 +4,9 @@ import { getallcategory } from "../../../../../services/opreation/categoryAPI";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { createCourse } from "../../../../../services/opreation/courseAPI";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setCourse, setCourseId } from "../../../../../app/slice/courseSlice";
 
 const CourseInformation = () => {
   const [courseInformation, setCourseInformation] = useState({
@@ -23,6 +24,7 @@ const CourseInformation = () => {
   const token = useSelector((state) => state.auth.token);
   console.log(token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -73,13 +75,16 @@ const CourseInformation = () => {
     try {
       const response = await createCourse(formData, token);
 
-      console.log("Response Data -", response);
+      console.log("Response Data course -", response);
 
       if (!response) {
         throw new Error("Error not gives response");
       }
+
+      dispatch(setCourse(response));
+      dispatch(setCourseId(response._id));
       toast.success("Course Create Success");
-      navigate("/add-section");
+      navigate("/dashboard/add-section");
 
     } catch (err) {
       console.log(err);
@@ -107,7 +112,7 @@ const CourseInformation = () => {
             value={courseInformation.title}
             onChange={handleChange}
             placeholder="Enter course title"
-            className="w-full p-2 rounded bg-richblack-700 text-white"
+            className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           />
         </div>
 
@@ -120,7 +125,7 @@ const CourseInformation = () => {
             onChange={handleChange}
             placeholder="Enter description"
             rows={8}
-            className="w-full p-2 rounded bg-richblack-700 text-white"
+             className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           ></textarea>
         </div>
 
@@ -133,7 +138,7 @@ const CourseInformation = () => {
             value={courseInformation.price}
             onChange={handleChange}
             placeholder="₹ 0"
-            className="w-full p-2 no-spinner rounded bg-richblack-700 text-white"
+            className=" no-spinner w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           />
         </div>
 
@@ -146,7 +151,7 @@ const CourseInformation = () => {
             name="category"
             value={courseInformation.category}
             onChange={handleChange}
-            className="bg-richblack-700 text-white px-3 py-2 rounded-md"
+             className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           >
             <option value="">Select a category</option>
             {category.map((item) => (
@@ -166,7 +171,7 @@ const CourseInformation = () => {
             value={courseInformation.tag}
             onChange={handleChange}
             placeholder="e.g., JavaScript, React"
-            className="w-full p-2 rounded bg-richblack-700 text-white"
+            className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           />
         </div>
 
@@ -179,7 +184,7 @@ const CourseInformation = () => {
             onChange={handleChange}
             rows={8}
             placeholder="Skills or benefits of the course"
-            className="w-full p-2 rounded bg-richblack-700 text-white"
+            className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           ></textarea>
         </div>
 
@@ -191,7 +196,7 @@ const CourseInformation = () => {
             value={courseInformation.instruction}
             onChange={handleChange}
             placeholder="Add any instructions"
-            className="w-full p-2 rounded bg-richblack-700 text-white"
+           className="w-full mt-5 px-4 py-3 bg-richblack-700 text-white placeholder:text-richblack-300 border border-richblack-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
           ></textarea>
         </div>
 

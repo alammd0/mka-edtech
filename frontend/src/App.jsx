@@ -12,6 +12,7 @@ import EnrolledCourses from "./components/core/dashboard/Student/EnrolledCourses
 import { ACCOUNT_TYPE } from "./utils/constants";
 import PurchaseHistory from "./components/core/dashboard/Student/PurchaseHistory";
 import AddCourse from "./components/core/dashboard/Instructor/Course/AddCourse";
+import CourseBuilder from "./components/core/dashboard/Instructor/Section/CourseBuilder";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -44,6 +45,7 @@ function App() {
             {user?.accountType === ACCOUNT_TYPE.Instructor && (
               <>
                 <Route path="add-course" element={<AddCourse />} />
+                <Route path="add-section" element={<CourseBuilder />} />
               </>
             )}
           </Route>

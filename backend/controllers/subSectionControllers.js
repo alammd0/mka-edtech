@@ -6,6 +6,7 @@ const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload
 exports.createSubsection = async (req, res) => {
   try {
     const { sectionId, title, description } = req.body;
+    
     const video = req.files.videoURL;
 
     if (!title || !sectionId || !description || !video) {
@@ -50,6 +51,7 @@ exports.createSubsection = async (req, res) => {
       message: "Subsection created successfully",
       data: updatedSection,
     });
+
   } catch (err) {
     console.log(err);
     return res.status(501).json({
