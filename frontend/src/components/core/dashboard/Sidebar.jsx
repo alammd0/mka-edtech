@@ -52,7 +52,7 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="bg-richblack-800 px-4 py-6 h-screen w-[15%] fixed top-0 left-0 overflow-y-auto">
+    <div className="bg-richblack-800 mt-16 px-4 py-6 h-screen w-[15%] fixed top-0 left-0 overflow-y-auto">
       <div className="flex flex-col justify-between gap-48">
         <div className="flex flex-col gap-10">
           {filteredLink.map((link) => {
@@ -71,7 +71,7 @@ export const Sidebar = () => {
                   } text-[16px] font-inter`}
                   to={link.path}
                 >
-                  <p> {Icon && <Icon className="mr-3 text-lg" />} </p>
+                  <p> {Icon && <Icon className="mr-2 text-lg" />} </p>
                   <p> {link.name} </p>
                 </NavLink>
               </div>

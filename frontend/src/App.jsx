@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, Router } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import { Home } from "./pages/Home";
 import About from "./pages/About";
@@ -13,6 +13,9 @@ import { ACCOUNT_TYPE } from "./utils/constants";
 import PurchaseHistory from "./components/core/dashboard/Student/PurchaseHistory";
 import AddCourse from "./components/core/dashboard/Instructor/Course/AddCourse";
 import CourseBuilder from "./components/core/dashboard/Instructor/Section/CourseBuilder";
+import Laststep from "./components/core/dashboard/Instructor/SubSection/Laststep";
+import MyCourse from "./components/core/dashboard/Instructor/CourseDetails/MyCourse";
+import Instructor from "./components/core/dashboard/Instructor";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -46,6 +49,9 @@ function App() {
               <>
                 <Route path="add-course" element={<AddCourse />} />
                 <Route path="add-section" element={<CourseBuilder />} />
+                <Route path="last-step" element={<Laststep />} />
+                <Route path="my-courses" element={<MyCourse/>} />
+                <Route path="instructor" element={<Instructor/>} />
               </>
             )}
           </Route>

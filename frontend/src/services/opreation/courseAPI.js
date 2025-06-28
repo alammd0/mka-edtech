@@ -1,10 +1,16 @@
 import { CourseEndPoints } from "../endPints";
 import { apiconnector } from "../apicontector";
 import { SectionEndPoints } from "../endPints";
+import { SubSectionEndPoints } from "../endPints";
 
 const { CREATE_COURSE_API } = CourseEndPoints;
 const { CREATE_SECTION_API, UPDATE_SECTION_API, DELETE_SECTION_API } =
   SectionEndPoints;
+const {
+  CREATE_SUB_SECTION_API,
+  UPDATE_SUB_SECTION_API,
+  DELETE_SUB_SECTION_API,
+} = SubSectionEndPoints;
 
 export const createCourse = async (data, token) => {
   console.log("Token here - ", token);
@@ -47,33 +53,78 @@ export const updateSection = async (data, token) => {
     // console.log("Data - ", data);
 
     const response = await apiconnector("PUT", UPDATE_SECTION_API, data, {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    if(!response){
-      throw new Error
+    if (!response) {
+      throw new Error();
     }
 
-    return response ;
-
+    return response;
   } catch (error) {
     console.log(error);
   }
 };
 
 export const deleteSection = async (sectionId, token) => {
-  try{
+  try {
     // console.log("SectionId - ", sectionId);
-    const response = await apiconnector("DELETE", `${DELETE_SECTION_API}/${sectionId}`, sectionId, {
-      Authorization: `Bearer ${token}`
-    })
+    const response = await apiconnector(
+      "DELETE",
+      `${DELETE_SECTION_API}/${sectionId}`,
+      sectionId,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
 
-    if(!response){
-      throw new Error
+    if (!response) {
+      throw new Error();
     }
 
     return response;
-  }catch(err){
+  } catch (err) {
     console.log(err);
+  }
+};
+
+// Sub-Section
+export const createSubSection = async (data, token) => {
+  console.log("Data - ", data);
+
+  try {
+    const response = await apiconnector("POST", CREATE_SUB_SECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    });
+
+    if (!response) {
+      throw new Error();
+    }
+
+    return response;
+  } catch (error) {
+    console.log("Error - ", error);
+  }
+};
+
+export const deleteSubsection = async (data, token) => {
+  try {
+    const response = await apiconnector(
+      "DELETE",
+      DELETE_SUB_SECTION_API,
+      data,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response) {
+      throw new Error();
+    }
+
+    return response;
+  } catch (error) {
+    console.log(error);
   }
 };

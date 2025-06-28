@@ -5,9 +5,14 @@ const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload
 // create Subsection
 exports.createSubsection = async (req, res) => {
   try {
+
+    console.log("Req ki data - ", req.body);
+
     const { sectionId, title, description } = req.body;
-    
-    const video = req.files.videoURL;
+
+    console.log(req.files);
+
+    const video = req.files.video;
 
     if (!title || !sectionId || !description || !video) {
       return res.status(502).json({
