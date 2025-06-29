@@ -7,7 +7,7 @@ import ContactUs from "./pages/ContactUs";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import DashboardLayout from "./pages/DashboardLayout";
-import Myprofile from "./components/core/dashboard/Myprofile";
+import Myprofile from "./components/core/dashboard/profile/Myprofile";
 import EnrolledCourses from "./components/core/dashboard/Student/EnrolledCourses";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import PurchaseHistory from "./components/core/dashboard/Student/PurchaseHistory";
@@ -16,6 +16,7 @@ import CourseBuilder from "./components/core/dashboard/Instructor/Section/Course
 import Laststep from "./components/core/dashboard/Instructor/SubSection/Laststep";
 import MyCourse from "./components/core/dashboard/Instructor/CourseDetails/MyCourse";
 import Instructor from "./components/core/dashboard/Instructor";
+import EditProfileDetails from "./components/core/dashboard/profile/EditProfileDetails";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -34,7 +35,10 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* Redirect /dashboard to /dashboard/my-profile */}
             <Route index element={<Navigate to="my-profile" replace />} />
-            <Route path="my-profile" element={<Myprofile />} />
+            <Route path="my-profile" element={
+              <Myprofile />
+            } />
+            <Route path="edit-profile-details" element = {<EditProfileDetails />} />
 
             {/* Student-only routes */}
             {user?.accountType === ACCOUNT_TYPE.Student && (
@@ -54,6 +58,7 @@ function App() {
                 <Route path="instructor" element={<Instructor/>} />
               </>
             )}
+            
           </Route>
         </Routes>
       </main>

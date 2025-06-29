@@ -1,13 +1,14 @@
 import { UserEndPoints } from "../endPints";
 import { apiconnector } from "../apicontector";
+import { ProfileEndPoints } from "../endPints";
 
 const { SIGNUP_API, LOGIN_API, GET_USER_API, FORGET_PASSWORD_API } =
   UserEndPoints;
 
+const { UPDATE_PROFILE_API } = ProfileEndPoints;
+
 export const signup = async (data) => {
-
-//   console.log("User info Data - ", data);
-
+  //   console.log("User info Data - ", data);
   try {
     let response = await apiconnector("POST", SIGNUP_API, data);
 
@@ -22,7 +23,6 @@ export const signup = async (data) => {
 };
 
 export const login = async (data) => {
-
   try {
     const response = await apiconnector("POST", LOGIN_API, data);
 
@@ -31,8 +31,45 @@ export const login = async (data) => {
     }
 
     return response;
-
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getuser = async (data, token) => {
+  try {
+    const response = await apiconnector("GET", GET_USER_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response || !response.data) {
+      throw new Error("Not given Response...");
+    }
+
+    return response;
+  } catch (error) {
+    console.log("error");
+    throw new Error("Error fetching User details");
+  }
+};
+
+// update user details and profile details
+export const updateuserandprofile = async (data, token) => {
+  
+  console.log("Here user and profile data - ", data);
+
+  try {
+    const response = await apiconnector("PUT", UPDATE_PROFILE_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response || !response.data) {
+      throw new Error("No response please check");
+    }
+
+    return response;
+  } catch (err) {
+    console.log(err);
+    console.error("Error - ", err);
   }
 };

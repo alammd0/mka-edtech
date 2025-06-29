@@ -9,7 +9,6 @@ exports.signup = async (req, res) => {
   try {
 
     // console.log("Req ki Data - ",  req.body);
-
     const {
       firstName,
       lastName,
@@ -176,6 +175,7 @@ exports.getuser = async (req, res) => {
       message: "User Fetch Success",
       data: findUser,
     });
+    
   } catch (err) {
     console.log(err);
     return res.status(503).json({

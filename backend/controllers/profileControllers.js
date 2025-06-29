@@ -56,46 +56,61 @@ exports.updatePassword = async (req, res) => {
 // Update Profile
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    // FIX: use userId from body, not from JWT middleware
+    const userId = req.body.userId;
 
-    const { dob, gender, about } = req.body;
+    // destructure correctly if you pass nested
+    const { userData, profileData } = req.body;
+    const { firstName, lastName, email } = userData;
+    const { dob, gender, about, phone } = profileData;
 
-    if (!dob || !gender || !about) {
-      return res.status(402).json({
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "All fielded required...",
+        message: "User not found",
       });
     }
 
-    const user = await User.findById(userId);
-    const profileDetails = await Profile.findById(user.profile);
-    console.log("Profiles Details - ", profileDetails);
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
+    await user.save();
 
-    profileDetails.dob = dob;
-    profileDetails.about = about;
-    profileDetails.gender = gender;
+    const profileDetails = await Profile.findById(user.profile);
+    if (!profileDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile not found",
+      });
+    }
+
+    profileDetails.dob = dob || profileDetails.dob;
+    profileDetails.gender = gender || profileDetails.gender;
+    profileDetails.about = about || profileDetails.about;
+    profileDetails.phone = phone || profileDetails.phone;
 
     await profileDetails.save();
 
     return res.status(200).json({
       success: true,
-      message: "Profile Update succussfully...",
-      data: profileDetails,
+      message: "Profile updated successfully",
+      data: {
+        ...user.toObject(),
+        profile: profileDetails,
+      },
     });
   } catch (err) {
-    console.log(err);
-    return res.status(502).json({
+    console.error(err);
+    return res.status(500).json({
       success: false,
-      message: "Profile update failed...",
+      message: "Profile update failed",
     });
   }
 };
 
-
 // delete Account
 
-
 // update profile pic
-
 
 // get enrollment course..
