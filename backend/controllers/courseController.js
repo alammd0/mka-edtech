@@ -1,6 +1,12 @@
 const User = require("../models/User");
 const Course = require("../models/Course");
-const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload");
+const RatingAndReview = require("../models/RatingAndReview");
+
+const {
+  UploadToCloudinary,
+  uploadImageToCloudinary,
+} = require("../utils/Upload");
+
 const Category = require("../models/Category");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -208,75 +214,157 @@ exports.updatecourse = async (req, res) => {
   }
 };
 
-// get-all Course
 exports.getallscourses = async (req, res) => {
   try {
-    const courseDetails = await Course.find(
+
+    const courses = await Course.find(
       {},
       {
         title: true,
+        description: true,
         price: true,
         thumbnail: true,
         createBy: true,
         ratingAndReview: true,
         studentEnrollment: true,
+        createdAt: true,
+        section: true,
       }
     )
       .populate("createBy", "firstName lastName email")
+      .populate({
+        path: "section",
+        populate: {
+          path: "subSection",
+          select: "timeDuration",
+        },
+      })
       .exec();
 
-    if (!courseDetails) {
-      return res.status(401).json({
+    console.log("Course - ", courses);
+
+    if (!courses || courses.length === 0) {
+      return res.status(404).json({
         success: false,
-        message: "Not Courses Found",
+        message: "No courses found",
       });
     }
 
+    const getDurationInMinutes = (durationStr) => {
+      if (typeof durationStr === "number") return durationStr;
+      const [mins, secs] = durationStr.split(":").map(Number);
+      return mins + secs / 60;
+    };
+
+    const updatedCourses = courses.map((course) => {
+      let totalMinutes = 0;
+
+      course.section.forEach((sec) => {
+        sec.subSection.forEach((sub) => {
+          if (sub.timeDuration) {
+            totalMinutes += getDurationInMinutes(sub.timeDuration);
+          }
+        });
+      });
+
+      return {
+        _id: course._id,
+        title: course.title,
+        description: course.description,
+        price: course.price,
+        createdAt: course.createdAt,
+        thumbnail: course.thumbnail,
+        createBy: course.createBy,
+        ratingAndReview: course.ratingAndReview,
+        studentEnrollment: course.studentEnrollment,
+        totalDuration: totalMinutes.toFixed(2),
+      };
+    });
+
     return res.status(200).json({
       success: true,
-      message: "Courses fetch Successfully...",
-      data: courseDetails,
+      message: "Courses fetched successfully",
+      data: updatedCourses,
     });
+
   } catch (error) {
-    console.log(error);
-    return res.status(404).json({
+
+    console.error("Error in getallscourses:", error);
+    return res.status(500).json({
       success: false,
-      message: "Not Found Course, All course",
+      message: "Failed to fetch courses",
     });
+
   }
 };
 
-// get-single course
+// Get a single course by its ID, including all its sections and subsections.
 exports.getcoursedetails = async (req, res) => {
   try {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
-        message: "Course Id Not Provide please Provide....",
+        message: "Course ID is required.",
       });
     }
 
-    const course = await Course.findById(id);
+    // Find the course and populate all necessary fields
+    const courseDetails = await Course.findById(id)
+      .populate({
+        path: "createBy",
+        select: "firstName lastName email image",
+      })
+      .populate("category")
+      .populate("ratingAndReview")
+      .populate({
+        path: "section",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec();
 
-    if (!course) {
+    console.log("Course Details - ", courseDetails);
+
+    if (!courseDetails) {
       return res.status(404).json({
         success: false,
-        message: "Course Details Not Found",
+        message: `Course with id ${id} not found`,
       });
     }
+
+    // Helper to parse "mm:ss" duration strings
+    const getDurationInMinutes = (durationStr) => {
+      if (typeof durationStr === "number") return durationStr;
+      const [mins, secs] = durationStr.split(":").map(Number);
+      return mins + secs / 60;
+    };
+
+    // Calculate total duration
+    let totalMinutes = 0;
+    courseDetails.section.forEach((sec) => {
+      sec.subSection.forEach((sub) => {
+        if (sub.timeDuration) {
+           totalMinutes += getDurationInMinutes(sub.timeDuration);
+        }
+      });
+    });
+
+    const courseData = courseDetails.toObject();
+    courseData.totalDuration = totalMinutes.toFixed(2);
 
     return res.status(200).json({
       success: true,
-      message: "Course Details are fetch Succussfully...",
-      data: course,
+      message: "Course details fetched successfully.",
+      data: courseData,
     });
   } catch (err) {
-    console.log(err);
-    return res.status(404).json({
+    console.error("Error fetching course details:", err);
+    return res.status(500).json({
       success: false,
-      message: "No Found course details",
+      message: "Failed to fetch course details.",
     });
   }
 };
@@ -284,7 +372,6 @@ exports.getcoursedetails = async (req, res) => {
 // Delete Course
 exports.deletecourse = async (req, res) => {
   try {
-    
     // fetch course id in parameter
     const { id } = req.params;
 
@@ -344,7 +431,6 @@ exports.deletecourse = async (req, res) => {
       success: true,
       message: "Course delete successfully...",
     });
-    
   } catch (error) {
     console.log(error);
     return res.status(400).json({

@@ -50,7 +50,6 @@ exports.createSection = async (req, res) => {
 // update Section 
 exports.updateSection = async (req, res) => {
     try{
-
         const {updatedName, sectionId} = req.body ; 
 
         console.log("Section Name - ", updatedName);

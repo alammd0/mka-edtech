@@ -12,7 +12,7 @@ const subSectionSchema = new mongoose.Schema({
   },
 
   timeDuration: {
-    type: String,
+    type: Number,
     default: "0:00", 
   },
 

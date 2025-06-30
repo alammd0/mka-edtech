@@ -25,7 +25,7 @@ export const CourseEndPoints = {
   CREATE_COURSE_API: `${backendUrl}/api/v1/course/create-course`,
   UPDATE_COURSE_API: `${backendUrl}/api/v1/course/update-course`,
   DELETE_COURSE_API: `${backendUrl}/api/v1/course/delete-course`,
-  GET_ALL_COURSE_API: `${backendUrl}/api/v1/course/get-all-course`,
+  GET_ALL_COURSE_API: `${backendUrl}/api/v1/course/get-all-courses`,
   GET_COURSE_DETAILS: `${backendUrl}/api/v1/course/get-course-details`,
 };
 
