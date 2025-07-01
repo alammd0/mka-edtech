@@ -17,6 +17,7 @@ import Laststep from "./components/core/dashboard/Instructor/SubSection/Laststep
 import MyCourse from "./components/core/dashboard/Instructor/CourseDetails/MyCourse";
 import Instructor from "./components/core/dashboard/Instructor";
 import EditProfileDetails from "./components/core/dashboard/profile/EditProfileDetails";
+import OneCourseDetails from "./components/core/dashboard/Instructor/CourseDetails/OneCourseDetails";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -55,6 +56,7 @@ function App() {
                 <Route path="add-section" element={<CourseBuilder />} />
                 <Route path="last-step" element={<Laststep />} />
                 <Route path="my-courses" element={<MyCourse/>} />
+                <Route path="my-courses/:id" element={<OneCourseDetails/>}/>
                 <Route path="instructor" element={<Instructor/>} />
               </>
             )}

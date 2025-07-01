@@ -15,15 +15,18 @@
     "axios": "^1.10.0",
     "flowbite": "^3.1.2",
     "framer-motion": "^12.18.1",
+    "media-chrome": "^4.11.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "react-icons": "^5.5.0",
+    "react-player": "^3.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "react-spring": "^10.0.1",
     "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
+    "react-video-js-player": "^1.1.1",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {

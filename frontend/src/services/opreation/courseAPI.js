@@ -3,7 +3,7 @@ import { apiconnector } from "../apicontector";
 import { SectionEndPoints } from "../endPints";
 import { SubSectionEndPoints } from "../endPints";
 
-const { CREATE_COURSE_API, GET_ALL_COURSE_API } = CourseEndPoints;
+const { CREATE_COURSE_API, GET_ALL_COURSE_API, GET_COURSE_DETAILS_BY_ID_API } = CourseEndPoints;
 const { CREATE_SECTION_API, UPDATE_SECTION_API, DELETE_SECTION_API } =
   SectionEndPoints;
 const {
@@ -45,6 +45,25 @@ export const getAllCourse = async () => {
     console.log("Error - ", error);
   }
 };
+
+
+export const getcourseById = async (courseId) => {
+  
+
+  try{
+
+    const response = await apiconnector("GET", `${GET_COURSE_DETAILS_BY_ID_API}/${courseId}`);
+    
+    if(!response || !response.data){
+      throw new Error("No response from server side");
+    }
+
+    return response;
+  }
+  catch(err){
+    console.log(err);
+  }
+}
 
 export const createSection = async (data, token) => {
   try {
