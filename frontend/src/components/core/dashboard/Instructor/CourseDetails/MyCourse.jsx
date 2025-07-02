@@ -17,15 +17,12 @@ const MyCourse = () => {
   const dispatch = useDispatch();
 
   const fetchCourse = async () => {
-    dispatch(setLoading(true));
     const toastId = toast.loading("Please waiting....");
     try {
       const response = await getAllCourse();
-
       if (!response || !response.data) {
         throw new Error("No data received from server");
       }
-
       setCourseDetails(response.data);
       dispatch(setCourse(response.data));
       toast.success("Courses fetched successfully");
@@ -37,9 +34,8 @@ const MyCourse = () => {
       toast.error(errorMessage);
       toast.dismiss(toastId);
     }
-    dispatch(setLoading(false));
   };
-
+  
   useEffect(() => {
     fetchCourse();
   }, [location]);

@@ -53,11 +53,11 @@ const SubSection = ({ sectionId, onClose, onSubSectionAdd }) => {
       onSubSectionAdd(sectionId, response.data);
       onClose();
       toast.success("Course Created");
-      toast.dismiss();
+      toast.dismiss(toastId);
     } catch (err) {
       console.log(err);
       toast.error("Subsection creation failed");
-      toast.dismiss();
+      toast.dismiss(toastId);
     }
   };
 

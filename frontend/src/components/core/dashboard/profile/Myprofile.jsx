@@ -5,18 +5,25 @@ import { toast } from "react-toastify";
 import { getuser } from "../../../../services/opreation/authAPI";
 import { Link, useLocation } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
+import UpdateProfilePicModal from "./UpdateProfileModal";
 
 const Myprofile = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
-  console.log("Token inside Profile page - ", token);
-  console.log("User details inside Profile page - ", user);
 
   // function to find user details
   const [profileData, setProfileData] = useState(null);
   const dispatch = useDispatch();
-
   const path = useLocation();
+  const [openProfileModal, setOpenProfileModal] = useState(false);
+
+  function openProfileModalHandler() {
+    setOpenProfileModal(true);
+  }
+
+  function closeProfileModalHandler() {
+    setOpenProfileModal(false);
+  }
 
   // console.log(path.pathname.trim(1, 0));
 
@@ -44,7 +51,7 @@ const Myprofile = () => {
     fetchProfile();
   }, [user._id, token]);
 
-  // console.log(profileData);
+  console.log(profileData);
 
   return (
     <div>
@@ -73,6 +80,7 @@ const Myprofile = () => {
                     <img
                       src={profileData?.profile?.profilePic}
                       alt="Not image"
+                      className="h-20 w-20 rounded-full object-cover"
                     />
                   </div>
                 )}
@@ -88,7 +96,7 @@ const Myprofile = () => {
               <button className="bg-yellow-50 h-fit px-4 py-2 text-richblack-400 rounded-md font-inter hover:bg-yellow-100 transition-all duration-100">
                 <Link
                   className="flex gap-2 items-center h-fit"
-                  to="/dashboard/edit-profile"
+                  onClick={openProfileModalHandler}
                 >
                   <FaRegEdit />
                   Edit
@@ -165,6 +173,12 @@ const Myprofile = () => {
           </div>
         </div>
       </div>
+
+      {openProfileModal && (
+        <UpdateProfilePicModal
+          onClose={closeProfileModalHandler}
+        />
+      )}
     </div>
   );
 };

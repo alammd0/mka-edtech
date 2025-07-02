@@ -1,6 +1,7 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const { uploadImageToCloudinary } = require("../utils/Upload");
 
 // update password
 exports.updatePassword = async (req, res) => {
@@ -112,5 +113,63 @@ exports.updateProfile = async (req, res) => {
 // delete Account
 
 // update profile pic
+exports.updatedProfilePic = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log("User Id - ", userId);
+
+    console.log("Profile Pic - ", req.files);
+
+    if (!req.files || !req.files.profilePic) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload a profile picture",
+      });
+    }
+
+    const profilePicFile = req.files.profilePic;
+
+    // upload to cloudinary
+    const folder = process.env.CLOUDINARY_FOLDER_NAME || "Edtech";
+    const Image = await uploadImageToCloudinary(folder, profilePicFile);
+
+    // find user profile
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // find Profile
+    const profile = await Profile.findById(user.profile);
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile not found",
+      });
+    }
+
+    // update profile picture
+    profile.profilePic = Image.secure_url;
+    await profile.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile picture updated successfully",
+      data: {
+        profilePic: profile,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(503).json({
+      success: false,
+      message: "Profile Pic update error",
+    });
+  }
+};
 
 // get enrollment course..

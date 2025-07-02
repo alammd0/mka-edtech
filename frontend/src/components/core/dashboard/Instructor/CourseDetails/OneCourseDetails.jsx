@@ -42,6 +42,7 @@ const OneCourseDetails = () => {
       const firstSection = response.data?.section?.[0];
       const firstVideo = firstSection?.subSection?.[0];
       if (firstVideo) setSelectedVideo(firstVideo);
+      
       toast.success("Course details loaded!");
     } catch (err) {
       console.error(err);
@@ -72,6 +73,7 @@ const OneCourseDetails = () => {
             onVideoSelect={(video) => setSelectedVideo(video)}
             selectedVideo={selectedVideo}
           />
+
           <div className="p-6 flex-4/5 bg-richblack-900 ml-[2%]">
             {selectedVideo ? (
               <div className="flex flex-col gap-4">
@@ -138,6 +140,7 @@ const OneCourseDetails = () => {
               <p>No video selected.</p>
             )}
           </div>
+
         </div>
       )}
     </div>

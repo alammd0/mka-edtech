@@ -35,7 +35,7 @@ export const createCourse = async (data, token) => {
 export const getAllCourse = async () => {
   try {
     const response = await apiconnector("GET", GET_ALL_COURSE_API);
-    
+    console.log(response);
     if (!response || !response.data) {
       throw new Error("Here error - Please check....");
     }
@@ -45,7 +45,6 @@ export const getAllCourse = async () => {
     console.log("Error - ", error);
   }
 };
-
 
 export const getcourseById = async (courseId) => {
   

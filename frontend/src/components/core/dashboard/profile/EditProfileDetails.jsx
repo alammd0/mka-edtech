@@ -6,6 +6,7 @@ import {
   getuser,
   updateuserandprofile,
 } from "../../../../services/opreation/authAPI";
+
 import { setLoading, setUser } from "../../../../app/slice/authSlice";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,8 +14,6 @@ import { Link, useNavigate } from "react-router-dom";
 const EditProfileDetails = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
-  console.log("Token inside Profile page - ", token);
-  console.log("User details inside Profile page - ", user);
 
   // function to find user details
   const [profileData, setProfileData] = useState(null);
@@ -39,7 +38,7 @@ const EditProfileDetails = () => {
     fetchProfile();
   }, []);
 
-//   console.log(profileData);
+  //   console.log(profileData);
 
   const [userData, setUserData] = useState({
     firstName: "",

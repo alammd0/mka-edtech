@@ -18,6 +18,8 @@ import MyCourse from "./components/core/dashboard/Instructor/CourseDetails/MyCou
 import Instructor from "./components/core/dashboard/Instructor";
 import EditProfileDetails from "./components/core/dashboard/profile/EditProfileDetails";
 import OneCourseDetails from "./components/core/dashboard/Instructor/CourseDetails/OneCourseDetails";
+import Courses from "./pages/Courses";
+import CourseDetails from "./pages/CourseDetails";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -27,11 +29,14 @@ function App() {
       <Navbar />
       <main>
         <Routes>
+
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/courses" element={<Courses/>} />
+          <Route path="/courses/course-details/:id" element={<CourseDetails />} />
 
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* Redirect /dashboard to /dashboard/my-profile */}
@@ -60,8 +65,9 @@ function App() {
                 <Route path="instructor" element={<Instructor/>} />
               </>
             )}
-            
+
           </Route>
+
         </Routes>
       </main>
     </div>

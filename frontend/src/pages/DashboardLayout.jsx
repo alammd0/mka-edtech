@@ -1,17 +1,29 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/core/dashboard/Sidebar";
-import CourseSidebar from "../components/core/dashboard/Instructor/CourseDetails/CourseSidebar";
+
 
 const DashboardLayout = () => {
   const location = useLocation();
-  const isCoursePage = location.pathname.includes("/dashboard/my-courses/");
-  console.log("Course path - ", isCoursePage);
+
+  const hideSidebarRoutes = [
+    "/dashboard/my-courses/"
+  ];
+
+  const isSidebarHidden = hideSidebarRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   return (
-    <div className="mt-[70px] flex justify-between mx-auto">
-      {!isCoursePage && <Sidebar />}
+    <div className="mt-[60px] flex justify-between mx-auto">
+      {!isSidebarHidden && <Sidebar/>}
 
-      <div className={`${!isCoursePage ? "ml-[20%] w-[82%] min-h-screen overflow-auto mt-4" : ""}`}>
+      <div
+        className={`${
+          !isSidebarHidden
+            ? "ml-[20%] w-[82%] min-h-screen overflow-auto mt-4"
+            : "w-full min-h-screen overflow-auto mt-4"
+        }`}
+      >
         <Outlet />
       </div>
     </div>

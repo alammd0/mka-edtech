@@ -224,6 +224,9 @@ exports.getallscourses = async (req, res) => {
         description: true,
         price: true,
         thumbnail: true,
+        whatWeLearn: true,
+        instruction: true,
+        tag: true,
         createBy: true,
         ratingAndReview: true,
         studentEnrollment: true,
@@ -231,7 +234,7 @@ exports.getallscourses = async (req, res) => {
         section: true,
       }
     )
-      .populate("createBy", "firstName lastName email")
+      .populate("createBy", "firstName lastName email profile")
       .populate({
         path: "section",
         populate: {
@@ -240,8 +243,6 @@ exports.getallscourses = async (req, res) => {
         },
       })
       .exec();
-
-    console.log("Course - ", courses);
 
     if (!courses || courses.length === 0) {
       return res.status(404).json({
@@ -314,7 +315,7 @@ exports.getcoursedetails = async (req, res) => {
     const courseDetails = await Course.findById(id)
       .populate({
         path: "createBy",
-        select: "firstName lastName email image",
+        select: "firstName lastName email profile",
       })
       .populate("category")
       .populate("ratingAndReview")
@@ -325,8 +326,6 @@ exports.getcoursedetails = async (req, res) => {
         },
       })
       .exec();
-
-    console.log("Course Details - ", courseDetails);
 
     if (!courseDetails) {
       return res.status(404).json({

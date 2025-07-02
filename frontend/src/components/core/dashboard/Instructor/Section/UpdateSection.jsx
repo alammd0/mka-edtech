@@ -13,9 +13,7 @@ const UpdateSection = ({ sectionId, sectionName, onClose }) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Update name - ", updatedName);
-
+    
     if (!updatedName.trim()) {
       toast.error("Section name cannot be empty");
       return;

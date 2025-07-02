@@ -24,8 +24,8 @@ const CourseSidebar = ({ course, onVideoSelect }) => {
   };
 
   return (
-    <div className="bg-richblack-800 text-white p-4 md:w-[250px] min-h-screen overflow-y-auto font-inter">
-      <h2 className="text-xl font-semibold mb-4">{course?.title}</h2>
+    <div className="bg-richblack-800 mt-[-10px] text-white p-4 md:w-[250px] min-h-screen mb-[10px] overflow-y-auto font-inter">
+      <h2 className="text-xl font-semibold mb-4 pt-5">{course?.title}</h2>
 
       {course?.section?.map((section) => (
         <div

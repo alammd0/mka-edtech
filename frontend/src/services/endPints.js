@@ -12,6 +12,7 @@ export const UserEndPoints = {
 export const ProfileEndPoints = {
   UPDATE_PASSWORD_API: `${backendUrl}/api/v1/profile/update-password`,
   UPDATE_PROFILE_API: `${backendUrl}/api/v1/profile/update-profile`,
+  UPDATE_PROFILE_PIC_API: `${backendUrl}/api/v1/profile/update-profile-image`,
 };
 
 // Category EndPoint

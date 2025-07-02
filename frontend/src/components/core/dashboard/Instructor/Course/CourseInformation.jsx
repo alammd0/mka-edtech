@@ -22,7 +22,6 @@ const CourseInformation = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [category, setCategory] = useState([]);
   const token = useSelector((state) => state.auth.token);
-  console.log(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,8 +40,6 @@ const CourseInformation = () => {
 
     fetchCategory();
   }, []);
-
-  console.log(category);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,9 +71,6 @@ const CourseInformation = () => {
     const toastId = toast.loading("Please Wait.....");
     try {
       const response = await createCourse(formData, token);
-
-      console.log("Response Data course -", response);
-
       if (!response) {
         throw new Error("Error not gives response");
       }

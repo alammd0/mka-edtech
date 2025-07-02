@@ -9,9 +9,6 @@ import { userLogout } from "../../../app/slice/authSlice";
 export const Sidebar = () => {
   const user = useSelector((state) => state.auth.user);
   console.log(user);
-  const loading = useSelector((state) => state.auth.loading);
-  console.log(loading);
-
   const location = useLocation();
   const [logoutModal, setLogoutModal] = useState(false);
 
@@ -46,10 +43,6 @@ export const Sidebar = () => {
     }
     toast.dismiss(toastId);
   };
-
-  if (loading) {
-    return <div>Loading....</div>;
-  }
 
   return (
     <div className="bg-richblack-800 mt-16 px-4 py-6 h-screen w-[15%] fixed top-0 left-0 overflow-y-auto">

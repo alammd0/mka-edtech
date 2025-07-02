@@ -49,16 +49,12 @@ const Section = () => {
   };
 
   const handleAddSubSection = (sectionId, updatedSection) => {
-    console.log("New Subsection - ", updatedSection);
-
     setSections((prevSections) =>
       prevSections.map((section) =>
         section._id === sectionId ? updatedSection : section
       )
     );
   };
-
-  console.log("Section - ", sections);
 
   const handleDelete = async (sectionId) => {
     const toastId = toast.loading("Please wait...");

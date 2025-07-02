@@ -5,7 +5,7 @@ import { ProfileEndPoints } from "../endPints";
 const { SIGNUP_API, LOGIN_API, GET_USER_API, FORGET_PASSWORD_API } =
   UserEndPoints;
 
-const { UPDATE_PROFILE_API } = ProfileEndPoints;
+const { UPDATE_PROFILE_API, UPDATE_PROFILE_PIC_API } = ProfileEndPoints;
 
 export const signup = async (data) => {
   //   console.log("User info Data - ", data);
@@ -55,7 +55,6 @@ export const getuser = async (data, token) => {
 
 // update user details and profile details
 export const updateuserandprofile = async (data, token) => {
-  
   console.log("Here user and profile data - ", data);
 
   try {
@@ -71,5 +70,26 @@ export const updateuserandprofile = async (data, token) => {
   } catch (err) {
     console.log(err);
     console.error("Error - ", err);
+  }
+};
+
+// update user profile pic
+export const updateProfilePic = async (data, token) => {
+
+  console.log("Profile pic data - ", data);
+
+  try {
+    const response = await apiconnector("PUT", UPDATE_PROFILE_PIC_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response || !response.data) {
+      throw new Error("No response from server");
+    }
+
+    return response;
+  } catch (err) {
+    console.error("Error updating profile picture:", err);
+    throw err;
   }
 };
