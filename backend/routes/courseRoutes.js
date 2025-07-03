@@ -1,63 +1,119 @@
 const express = require("express");
-const { authentication, 
-        usermiddleware, 
-        instructormiddleware } = require("../middleware/authMiddleware");
-
-const { 
-    createcourse, 
-    updatecourse, 
-    getallscourses, 
-    getcoursedetails, 
-    deletecourse } = require("../controllers/courseController");
+const {
+  authentication,
+  usermiddleware,
+  instructormiddleware,
+} = require("../middleware/authMiddleware");
 
 const {
-    createSection,
-    updateSection,
-    deleteSection } = require("../controllers/sectionController");
+  createcourse,
+  updatecourse,
+  getallscourses,
+  getcoursedetails,
+  deletecourse,
+} = require("../controllers/courseController");
 
 const {
-    createSubsection,
-    updateSubSection,
-    deleteSubsection } = require("../controllers/subSectionControllers");
+  createSection,
+  updateSection,
+  deleteSection,
+} = require("../controllers/sectionController");
 
 const {
-    createcategory,
-    getallcategory
+  createSubsection,
+  updateSubSection,
+  deleteSubsection,
+} = require("../controllers/subSectionControllers");
+
+const {
+  createcategory,
+  getallcategory,
 } = require("../controllers/categoryController");
 
+const { buyCourse } = require("../controllers/paymentControllers");
+ 
 
 const router = express.Router();
 
-// access by only instructor
-router.post("/create-course", authentication, instructormiddleware, createcourse);
-router.put("/update-course/:id", authentication, instructormiddleware, updatecourse);
-router.delete("/delete-course/:id", authentication, instructormiddleware, deletecourse);
+// Course purchase and verification routes
+router.post("/buy-course", authentication, usermiddleware, buyCourse);
 
 
-// access by only user and instructor
+// Instructor-only routes
+router.post(
+  "/create-course",
+  authentication,
+  instructormiddleware,
+  createcourse
+);
+router.put(
+  "/update-course/:id",
+  authentication,
+  instructormiddleware,
+  updatecourse
+);
+
+router.delete(
+  "/delete-course/:id",
+  authentication,
+  instructormiddleware,
+  deletecourse
+);
+
+// Public course routes
 router.get("/get-all-courses", getallscourses);
 router.get("/get-course-details/:id", getcoursedetails);
 
+// Section routes (instructor-only)
+router.post(
+  "/create-section",
+  authentication,
+  instructormiddleware,
+  createSection
+);
 
-// section create part 
-router.post("/create-section", authentication, instructormiddleware, createSection);
-router.put("/update-section", authentication, instructormiddleware, updateSection);
-router.delete("/delete-section/:sectionId", authentication, instructormiddleware, deleteSection);
+router.put(
+  "/update-section",
+  authentication,
+  instructormiddleware,
+  updateSection
+);
 
-// sub-section parts
-router.post("/create-sub-section", authentication, instructormiddleware, createSubsection);
-router.put("/update-sub-section", authentication, instructormiddleware, updateSubSection);
-router.delete("/delete-sub-section", authentication, instructormiddleware, deleteSubsection);
+router.delete(
+  "/delete-section/:sectionId",
+  authentication,
+  instructormiddleware,
+  deleteSection
+);
 
+// Sub-section routes (instructor-only)
+router.post(
+  "/create-sub-section",
+  authentication,
+  instructormiddleware,
+  createSubsection
+);
+
+router.put(
+  "/update-sub-section",
+  authentication,
+  instructormiddleware,
+  updateSubSection
+);
+router.delete(
+  "/delete-sub-section",
+  authentication,
+  instructormiddleware,
+  deleteSubsection
+);
+
+// Category routes
 router.post(
   "/create-category",
   authentication,
   instructormiddleware,
   createcategory
 );
-
-router.get("/get-category", getallcategory)
-
-
+router.get("/get-category", getallcategory);
 
 module.exports = router;

@@ -30,6 +30,10 @@ export const CourseEndPoints = {
   GET_COURSE_DETAILS_BY_ID_API: `${backendUrl}/api/v1/course/get-course-details`,
 };
 
+export const PaymentEndPoints = {
+  BUY_COURSE_API : `${backendUrl}/api/v1/course/buy-course`
+}
+
 // Section Endpoints
 export const SectionEndPoints = {
   CREATE_SECTION_API: `${backendUrl}/api/v1/course/create-section`,
@@ -43,3 +47,4 @@ export const SubSectionEndPoints = {
   UPDATE_SUB_SECTION_API: `${backendUrl}/api/v1/course/update-sub-section`,
   DELETE_SUB_SECTION_API: `${backendUrl}/api/v1/course/delete-sub-section`,
 };
+

@@ -12,7 +12,11 @@ export const apiconnector = async (method, url, data = {}, headers = {}) => {
       method,
       url,
       data,
-      headers,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      withCredentials: true,
     });
 
     return response.data;
@@ -21,4 +25,3 @@ export const apiconnector = async (method, url, data = {}, headers = {}) => {
     throw err;
   }
 };
-
