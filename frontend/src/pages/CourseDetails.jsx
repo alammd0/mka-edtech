@@ -3,12 +3,13 @@ import { setLoading } from "../app/slice/authSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { buyCourse, getcourseById } from "../services/opreation/courseAPI";
+import { getcourseById } from "../services/opreation/courseAPI";
 import { FaStar } from "react-icons/fa";
 import { formatDate } from "../utils/date";
 import { BsCameraVideoFill } from "react-icons/bs";
 import { IoIosTime } from "react-icons/io";
 import { Footer } from "../components/common/Footer";
+import { buyCourse } from "../services/opreation/paymentAPI";
 
 const CourseDetails = () => {
   const [courseDetails, setCourseDetails] = useState(null);
@@ -45,81 +46,6 @@ const CourseDetails = () => {
 
   console.log(courseDetails);
 
-  const handleBuyCourse = async () => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const orderResponse = await buyCourse(id, token);
-      console.log("Order response:", orderResponse);
-
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: orderResponse.data.order.amount,
-        currency: "INR",
-        order_id: orderResponse.data.order.id,
-        name: "MKA Ed-Tech",
-        description: `Payment for ${courseDetails.title}`,
-        handler: function (response) {
-          // Call verifyPayment here
-          console.log("Payment Success", response);
-          toast.success("Payment successful!");
-          navigate("/dashboard/enrolled-courses");
-        },
-        prefill: {
-          name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-      rzp.on("payment.failed", function (response) {
-        toast.error("Payment Failed: " + response.error.description);
-      });
-    } catch (error) {
-      console.error("Buy Course Error:", error);
-      toast.error("Something went wrong. Try again.");
-    }
-  };
-
-  // const verifyPayment = async (paymentResponse, courseId, token) => {
-  //   try {
-  //     await verifyPaymentAPI(
-  //       {
-  //         razorpay_order_id: paymentResponse.razorpay_order_id,
-  //         razorpay_payment_id: paymentResponse.razorpay_payment_id,
-  //         razorpay_signature: paymentResponse.razorpay_signature,
-  //         courseId,
-  //       },
-  //       token
-  //     );
-  //     toast.success("Payment successful! You are now enrolled in the course.");
-  //     navigate("/dashboard/enrolled-courses");
-  //   } catch (error) {
-  //     console.error("Payment Verification Error:", error);
-  //     toast.error(
-  //       error.response?.data?.message || "Payment verification failed."
-  //     );
-  //   }
-  // };
-
-  // const handleBuyCourse = async () => {
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-
-  //   try {
-  //     const response = await buyCourse(id, token);
-
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log("Error Agya bhai..");
-  //   }
-  // };
-
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -132,6 +58,75 @@ const CourseDetails = () => {
     }
     return stars;
   };
+
+  async function buyCourseHandler() {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const toastId = toast.loading("Please wait...");
+
+    try {
+      const response = await buyCourse(id, token);
+      console.log("response - ", response);
+
+      if (!response) {
+        throw new Error("No response from server");
+      }
+
+      const data = response;
+
+      const options = {
+        key: "rzp_test_OVzu1gByIvxtQY",
+        amount: courseDetails.price * 100,
+        currency: "INR",
+        name: "EdTech Platform",
+        description: `Thanks for buying: ${courseDetails.title}`,
+        order_id: data.id,
+
+        handler: async function (response) {
+          const verifyRes = await fetch(
+            "http://localhost:4000/api/v1/payment/verify-payment",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                courseId: courseDetails._id,
+              }),
+            }
+            
+          );
+
+          const verifyData = await verifyRes.json();
+          console.log(verifyData);
+
+          if (verifyData.success) {
+            toast.success("Payment successful & verified!");
+            navigate("/my-courses");
+          } else {
+            toast.error("Payment verification failed");
+          }
+
+          toast.dismiss(toastId);
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+      toast.dismiss(toastId);
+    }
+  }
 
   // const isEnrolled = courseDetails?.studentsEnrolled?.includes(user?._id);
 
@@ -188,8 +183,8 @@ const CourseDetails = () => {
                   </div>
                   <div className="flex flex-col items-center gap-3">
                     <button
-                      onClick={() => setShowModal(true)}
                       // disabled={isEnrolled}
+                      onClick={buyCourseHandler}
                       className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold`}
                     >
                       Buy Now
@@ -242,32 +237,6 @@ const CourseDetails = () => {
           <p className="text-lg text-red-500">Course not found</p>
         )}
       </div>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
-            <h2 className="text-xl font-bold mb-4">Confirm Purchase</h2>
-            <p className="mb-4">Do you want to buy this course?</p>
-            <div className="flex gap-4 justify-end">
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-300 px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  handleBuyCourse();
-                }}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div>
         <Footer />

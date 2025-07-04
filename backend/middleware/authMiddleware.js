@@ -80,9 +80,8 @@ exports.instructormiddleware = async (req, res, next) => {
 };
 
 exports.usermiddleware = async (req, res, next) => {
-
   console.log("USER MIDDLEWARE: Current user:", req.user);
-  
+
   try {
     const user = req.user;
 
@@ -99,6 +98,8 @@ exports.usermiddleware = async (req, res, next) => {
         message: "Access Denied: Only User can access this route",
       });
     }
+
+    next();
   } catch (error) {
     console.log(error);
     return res.status(502).json({

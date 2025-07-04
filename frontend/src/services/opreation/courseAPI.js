@@ -69,48 +69,6 @@ export const getcourseById = async (courseId) => {
   }
 };
 
-export const buyCourse = async (courseId, token) => {
-  console.log("CourseId - ", courseId);
-  console.log("Token - ", token);
-
-  try {
-    const response = await apiconnector(
-      "POST",
-      BUY_COURSE_API,
-      { courseId },
-      {
-        Authorization: `Bearer ${token}`,
-      }
-    );
-
-    console.log("BUY_COURSE_API Response:", response);
-
-    if (!response.data) {
-      throw new Error("No data in response");
-    }
-
-    return response;
-  } catch (error) {
-    console.error("BUY_COURSE_API Error:", error);
-    throw error;
-  }
-};
-
-// export const verifyPaymentAPI = async (data, token) => {
-//   try {
-//     const response = await apiconnector("POST", VERIFY_PAYMENT_API, data, {
-//       Authorization: `Bearer ${token}`,
-//     });
-//     if (!response.data.success) {
-//       throw new Error(response.data.message);
-//     }
-//     return response.data;
-//   } catch (error) {
-//     console.error("VERIFY_PAYMENT_API Error:", error);
-//     throw error;
-//   }
-// };
-
 export const createSection = async (data, token) => {
   try {
     const response = await apiconnector("POST", CREATE_SECTION_API, data, {

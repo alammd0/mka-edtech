@@ -30,14 +30,7 @@ const {
   getallcategory,
 } = require("../controllers/categoryController");
 
-const { buyCourse } = require("../controllers/paymentControllers");
- 
-
 const router = express.Router();
-
-// Course purchase and verification routes
-router.post("/buy-course", authentication, usermiddleware, buyCourse);
-
 
 // Instructor-only routes
 router.post(
@@ -46,6 +39,7 @@ router.post(
   instructormiddleware,
   createcourse
 );
+
 router.put(
   "/update-course/:id",
   authentication,
@@ -63,6 +57,7 @@ router.delete(
 // Public course routes
 router.get("/get-all-courses", getallscourses);
 router.get("/get-course-details/:id", getcoursedetails);
+
 
 // Section routes (instructor-only)
 router.post(

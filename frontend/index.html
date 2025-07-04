@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Razorpay script (should be after root so React can access it) -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <title>Edtech</title>
+    
   </head>
   <body>
     <div id="root"></div>
 
     <!-- Your React app script -->
     <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Razorpay script (should be after root so React can access it) -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </body>
 </html>
