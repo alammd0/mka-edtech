@@ -43,8 +43,7 @@ exports.buyCourse = async (req, res) => {
     }
 
     // check user already buy this course or not if buy then show already buy this course
-    const uid = new mongoose.Types.ObjectId(userId);
-    if (courseDetails.studentEnrollment.includes(uid)) {
+    if (courseDetails.studentEnrollment.some((id) => id.equals(userId))) {
       return res.status(203).json({
         success: false,
         message: "You already bought this course.",
@@ -61,7 +60,7 @@ exports.buyCourse = async (req, res) => {
     const options = {
       amount: courseDetails.price * 100,
       currency: "INR",
-      receipt: `receipt_id${Date.now()}`,
+      receipt: `receipt_order_${Date.now()}`,
       notes: {
         courseId: courseId,
         userId: userId,
@@ -75,6 +74,7 @@ exports.buyCourse = async (req, res) => {
     return res.status(200).json({
       success: true,
       orderId: paymentOrder.id,
+      receipt: paymentOrder.receipt,
       amount: paymentOrder.amount,
       currency: paymentOrder.currency,
     });
@@ -90,7 +90,6 @@ exports.buyCourse = async (req, res) => {
 // verify payment and course details in user courses
 exports.verifyPayment = async (req, res) => {
   try {
-
     console.log(req.body);
     const {
       razorpay_order_id,
@@ -99,12 +98,11 @@ exports.verifyPayment = async (req, res) => {
       courseId,
     } = req.body;
 
-
     const userId = req.user.id;
     console.log("User ID - ", userId);
 
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    console.log("Sign -" , sign);
+    console.log("Sign -", sign);
 
     // generated_signature = hmac_sha256( order_id + "|" + razorpay_payment_id,secret);
 
@@ -114,10 +112,10 @@ exports.verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (paymentSignature !== razorpay_signature) {
-       return res.status(404).json({
-        success : false,
-        message : "Payment verifications failed"
-       })
+      return res.status(404).json({
+        success: false,
+        message: "Payment verifications failed",
+      });
     }
 
     // here add course..

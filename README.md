@@ -5,7 +5,7 @@ This is a full-stack e-learning platform built with the MERN stack. It provides 
 ## Tech Stack
 
 *   **Frontend:** React, Redux, Tailwind CSS, Vite
-*   **Backend:** Node.js, Express.js
+*   **Backend:** Node.js, Express.js, Razorpay (for payments), Cloudinary (for file uploads)
 *   **Database:** MongoDB
 
 ## Getting Started
@@ -26,7 +26,11 @@ This is a full-stack e-learning platform built with the MERN stack. It provides 
     ```bash
     npm install
     ```
-3.  Create a `.env` file in the `backend` directory and add the necessary environment variables (see `.env.example` if available).
+3.  Create a `.env` file in the `backend` directory and add the necessary environment variables. Refer to `.env.example` for required variables, including:
+    *   `RAZORPAY_KEY_ID`
+    *   `RAZORPAY_KEY_SECRET`
+    *   Cloudinary credentials (if applicable)
+    *   MongoDB URI
 4.  Start the backend server:
     ```bash
     npm start

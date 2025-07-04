@@ -15,8 +15,8 @@ const CourseDetails = () => {
   const [courseDetails, setCourseDetails] = useState(null);
   const { loading } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
-  const [showModal, setShowModal] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  console.log;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,25 +66,20 @@ const CourseDetails = () => {
     }
 
     const toastId = toast.loading("Please wait...");
-
     try {
       const response = await buyCourse(id, token);
-      console.log("response - ", response);
-
       if (!response) {
         throw new Error("No response from server");
       }
 
       const data = response;
-
       const options = {
         key: "rzp_test_OVzu1gByIvxtQY",
         amount: courseDetails.price * 100,
         currency: "INR",
         name: "EdTech Platform",
         description: `Thanks for buying: ${courseDetails.title}`,
-        order_id: data.id,
-
+        order_id: data.orderId,
         handler: async function (response) {
           const verifyRes = await fetch(
             "http://localhost:4000/api/v1/payment/verify-payment",
@@ -102,15 +97,12 @@ const CourseDetails = () => {
                 courseId: courseDetails._id,
               }),
             }
-            
           );
 
           const verifyData = await verifyRes.json();
-          console.log(verifyData);
-
           if (verifyData.success) {
             toast.success("Payment successful & verified!");
-            navigate("/my-courses");
+            navigate("/dashboard/enrolled-courses");
           } else {
             toast.error("Payment verification failed");
           }
@@ -128,7 +120,17 @@ const CourseDetails = () => {
     }
   }
 
-  // const isEnrolled = courseDetails?.studentsEnrolled?.includes(user?._id);
+  // const isEnrolled = courseDetails?.studentEnrollment?.includes(user?._id);
+  // const isAlreadyEnrolled = courseDetails?.studentEnrollment?.includes(userId)
+
+  console.log("Student Enrollments:", courseDetails?.studentEnrollment);
+  console.log("User ID:", user?._id);
+
+  const isAlreadyEnrolled = courseDetails?.studentEnrollment?.some(
+    (id) => id.toString() === user?._id?.toString()
+  );
+
+  console.log("Enrolled - ", isAlreadyEnrolled);
 
   return (
     <div className="mt-28">
@@ -182,13 +184,21 @@ const CourseDetails = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-center gap-3">
-                    <button
-                      // disabled={isEnrolled}
-                      onClick={buyCourseHandler}
-                      className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold`}
-                    >
-                      Buy Now
-                    </button>
+                    {isAlreadyEnrolled ? (
+                      <Link
+                        to="/dashboard/enrolled-courses"
+                        className="px-4 py-1 rounded-xl w-full text-[16px] font-semibold text-center bg-yellow-50 text-richblack-900"
+                      >
+                        Go to Course Dashboard
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={buyCourseHandler}
+                        className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold bg-yellow-50 text-richblack-900`}
+                      >
+                        Buy Now
+                      </button>
+                    )}
 
                     <button className="px-4 py-1 bg-richblue-400 rounded-xl w-full text-richblack-300 text-[16px] font-semibold">
                       Share
