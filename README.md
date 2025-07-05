@@ -95,6 +95,10 @@ A detailed list of API endpoints can be found in the backend routes files.
 
 Contributions are welcome! Please feel free to submit a pull request.
 
+## Author
+
+- **Md Khalid Alam**
+
 ## License
 
-This project is licensed under the MIT License.
+Copyright (c) 2025 Md Khalid Alam. All Rights Reserved.

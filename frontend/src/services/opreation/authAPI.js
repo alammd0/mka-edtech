@@ -53,6 +53,18 @@ export const getuser = async (data, token) => {
   }
 };
 
+export const forgetPassword = async (data) => {
+  try {
+    const response = await apiconnector("PUT", FORGET_PASSWORD_API, data);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // update user details and profile details
 export const updateuserandprofile = async (data, token) => {
   console.log("Here user and profile data - ", data);
@@ -75,7 +87,6 @@ export const updateuserandprofile = async (data, token) => {
 
 // update user profile pic
 export const updateProfilePic = async (data, token) => {
-
   console.log("Profile pic data - ", data);
 
   try {

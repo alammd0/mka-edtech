@@ -21,6 +21,7 @@ import OneCourseDetails from "./components/core/dashboard/Instructor/CourseDetai
 import Courses from "./pages/Courses";
 import PublicCourseDetails from "./pages/PublicCourseDetails";
 import EnrolledCoursesDetails from "./components/core/dashboard/Student/EntrolledCourseDetails";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -35,6 +36,7 @@ function App() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
 
           <Route path="/courses" element={<Courses />} />
           <Route
@@ -55,7 +57,10 @@ function App() {
             {user?.accountType === ACCOUNT_TYPE.Student && (
               <>
                 <Route path="enrolled-courses" element={<EnrolledCourses />} />
-                <Route path="enrolled-courses/:id" element={<EnrolledCoursesDetails/>}/>
+                <Route
+                  path="enrolled-courses/:id"
+                  element={<EnrolledCoursesDetails />}
+                />
                 <Route path="purchase-history" element={<PurchaseHistory />} />
               </>
             )}
