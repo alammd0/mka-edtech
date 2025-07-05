@@ -1,6 +1,7 @@
 const Razorpay = require("razorpay");
 const Course = require("../models/Course");
 const User = require("../models/User");
+const Payment = require("../models/Payment");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 
@@ -112,9 +113,24 @@ exports.verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (paymentSignature !== razorpay_signature) {
-      return res.status(404).json({
+      // Find course details to get the price
+      const course = await Course.findById(courseId);
+
+      // Create a new payment record for the failed payment
+      const payment = new Payment({
+        user: userId,
+        course: courseId,
+        amount: course ? course.price : 0,
+        currency: "INR",
+        paymentStatus: "failed",
+        paymentId: razorpay_payment_id,
+      });
+
+      await payment.save();
+
+      return res.status(400).json({
         success: false,
-        message: "Payment verifications failed",
+        message: "Payment verification failed",
       });
     }
 
@@ -145,6 +161,18 @@ exports.verifyPayment = async (req, res) => {
       console.log("Course saved successfully.");
     }
 
+    // Create a new payment record
+    const payment = new Payment({
+      user: userId,
+      course: courseId,
+      amount: course.price,
+      currency: "INR",
+      paymentStatus: "success",
+      paymentId: razorpay_payment_id,
+    });
+    
+    await payment.save();
+
     return res.status(200).json({
       success: true,
       message: "Payment verified..",
@@ -170,7 +198,60 @@ exports.findParchesCourse = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId).populate("courses");
+    const user = await User.findById(userId)
+      .populate({
+        path: "courses",
+        populate: {
+          path: "section",
+          populate: {
+            path: "subSection",
+          },
+        },
+      })
+      .exec();
+
+    const getDurationInSeconds = (duration) => {
+      if (typeof duration === "number") {
+        return duration;
+      }
+      if (typeof duration === "string") {
+        const parts = duration.split(":").map(Number);
+        if (parts.length === 2) {
+          const [mins, secs] = parts;
+          if (!isNaN(mins) && !isNaN(secs)) {
+            return mins * 60 + secs;
+          }
+        }
+        const single_part = Number(duration);
+        if (!isNaN(single_part)) {
+          return single_part;
+        }
+      }
+      return 0;
+    };
+
+    const coursesWithDuration = user.courses.map((course) => {
+      let totalDurationInSeconds = 0;
+
+      course.section.forEach((section) => {
+        section.subSection.forEach((sub) => {
+          totalDurationInSeconds += getDurationInSeconds(sub.timeDuration);
+        });
+      });
+
+      const hours = Math.floor(totalDurationInSeconds / 3600);
+      const minutes = Math.floor((totalDurationInSeconds % 3600) / 60);
+      const seconds = Math.floor(totalDurationInSeconds % 60);
+
+      const totalDuration = `${String(hours).padStart(2, "0")}h:${String(
+        minutes
+      ).padStart(2, "0")}m:${String(seconds).padStart(2, "0")}sec`;
+
+      return {
+        ...course.toObject(),
+        totalDuration,
+      };
+    });
 
     if (!user) {
       return res.status(402).json({
@@ -182,13 +263,39 @@ exports.findParchesCourse = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Our buying course are there",
-      data: user.courses,
+      data: coursesWithDuration,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
       message: "Not fetch purchases Course, due to server error...",
+    });
+  }
+};
+
+// find Payment history
+exports.findPaymentHistory = async (req, res) => {
+  try {
+    const paymentHistory = await Payment.find({});
+
+    if (!paymentHistory) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment history Not found...",
+      });
+    }
+
+    return res.status(200).json({
+      success: false,
+      message: "Payment history Like this....",
+      data: paymentHistory,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "fetch payment history failed...",
     });
   }
 };

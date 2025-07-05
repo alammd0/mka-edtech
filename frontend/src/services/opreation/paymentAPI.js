@@ -1,8 +1,12 @@
 import { apiconnector } from "../apicontector";
 import { PaymentEndPoints } from "../endPints";
 
-const { BUY_COURSE_API, VERIFY_PAYMENT_API, GET_BUY_COURSE_API } =
-  PaymentEndPoints;
+const {
+  BUY_COURSE_API,
+  VERIFY_PAYMENT_API,
+  GET_BUY_COURSE_API,
+  PAYMENT_HISTORY_API,
+} = PaymentEndPoints;
 
 // buy-course
 export const buyCourse = async (courseId, token) => {
@@ -48,9 +52,27 @@ export const verifyPayment = async (data, token) => {
 };
 
 // get-parches course
-export const getParchesCourse = async () => {
+export const getParchesCourse = async (token) => {
+  console.log("Token - ", token);
   try {
-    const response = await apiconnector("GET", GET_BUY_COURSE_API, {
+    const response = await apiconnector("GET", GET_BUY_COURSE_API, null, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response || !response.data) {
+      throw new Error("No give response from server side...");
+    }
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// get-payment history
+export const getpaymenthistory = async (token) => {
+  try {
+    const response = await apiconnector("GET", PAYMENT_HISTORY_API, null, {
       Authorization: `Bearer ${token}`,
     });
 

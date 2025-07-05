@@ -6,8 +6,8 @@ exports.authentication = async (req, res, next) => {
   try {
     // console.log(req.cookies?.token);
 
-    console.log("AUTH: Received token:", req.headers.authorization);
-
+    // console.log("AUTH: Received token:", req.headers.authorization);
+    
     const token =
       req.body?.token ||
       req.header("Authorization")?.replace("Bearer ", "") ||
@@ -80,7 +80,7 @@ exports.instructormiddleware = async (req, res, next) => {
 };
 
 exports.usermiddleware = async (req, res, next) => {
-  console.log("USER MIDDLEWARE: Current user:", req.user);
+  // console.log("USER MIDDLEWARE: Current user:", req.user);
 
   try {
     const user = req.user;

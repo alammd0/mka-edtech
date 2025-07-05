@@ -48,5 +48,6 @@ export const SubSectionEndPoints = {
 export const PaymentEndPoints = {
   BUY_COURSE_API: `${backendUrl}/api/v1/payment/buycourse`,
   VERIFY_PAYMENT_API: `${backendUrl}/api/v1/payment/verify-payment"`,
-  GET_BUY_COURSE_API: `${backendUrl}/api/v1/payment/get-parches`,
+  GET_BUY_COURSE_API: `${backendUrl}/api/v1/payment/get-parches-course`,
+  PAYMENT_HISTORY_API: `${backendUrl}/api/v1/payment/payment-history`
 };

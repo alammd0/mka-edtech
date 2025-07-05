@@ -11,12 +11,12 @@ import { IoIosTime } from "react-icons/io";
 import { Footer } from "../components/common/Footer";
 import { buyCourse } from "../services/opreation/paymentAPI";
 
-const CourseDetails = () => {
+const PublicCourseDetails = () => {
   const [courseDetails, setCourseDetails] = useState(null);
   const { loading } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth.user);
-  console.log;
+  console.log(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -124,13 +124,13 @@ const CourseDetails = () => {
   // const isAlreadyEnrolled = courseDetails?.studentEnrollment?.includes(userId)
 
   console.log("Student Enrollments:", courseDetails?.studentEnrollment);
-  console.log("User ID:", user?._id);
+  // console.log("User ID:", user?._id);
 
   const isAlreadyEnrolled = courseDetails?.studentEnrollment?.some(
     (id) => id.toString() === user?._id?.toString()
   );
 
-  console.log("Enrolled - ", isAlreadyEnrolled);
+  // console.log("Enrolled - ", isAlreadyEnrolled);
 
   return (
     <div className="mt-28">
@@ -139,7 +139,7 @@ const CourseDetails = () => {
           <div className="w-full h-screen flex items-center justify-center">
             <div className="spinner"></div>
           </div>
-        ) : courseDetails ? (
+        ) : courseDetails.length === 0 ? (
           <div className="flex flex-col gap-8">
             <div className="relative flex items-center justify-between bg-richblack-800 p-6 rounded-lg shadow-lg">
               <div className="flex flex-col gap-2 w-8/12">
@@ -157,14 +157,14 @@ const CourseDetails = () => {
                     </span>
                   </div>
                   <div>
-                    <span className="text-richblack-300 ml-2">
-                      {courseDetails.studentsEnrolled?.length} students enrolled
+                    <span className="text-richblack-300 ml-2 capitalize">
+                      {courseDetails.studentEnrollment?.length} students enrolled
                     </span>
                   </div>
                 </div>
                 <p className="text-lg font-semibold text-richblack-300">
-                  Created By {courseDetails.instructor?.firstName}{" "}
-                  {courseDetails.instructor?.lastName}
+                  Created By {courseDetails.createBy?.firstName}{" "}
+                  {courseDetails.createBy?.lastName}
                 </p>
                 <p className="text-richblack-300 flex items-center gap-2">
                   <IoIosTime /> Created At{" "}
@@ -193,10 +193,19 @@ const CourseDetails = () => {
                       </Link>
                     ) : (
                       <button
-                        onClick={buyCourseHandler}
-                        className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold bg-yellow-50 text-richblack-900`}
+                        onClick={
+                          user.accountType === "Student"
+                            ? buyCourseHandler
+                            : undefined
+                        }
+                        disabled={user.accountType !== "Student"}
+                        className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold bg-yellow-50 text-richblack-900 ${
+                          user.accountType !== "Student"
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
                       >
-                        Buy Now
+                        Buy
                       </button>
                     )}
 
@@ -255,4 +264,4 @@ const CourseDetails = () => {
   );
 };
 
-export default CourseDetails;
+export default PublicCourseDetails;

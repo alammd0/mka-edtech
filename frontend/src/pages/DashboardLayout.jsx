@@ -6,7 +6,8 @@ const DashboardLayout = () => {
   const location = useLocation();
 
   const hideSidebarRoutes = [
-    "/dashboard/my-courses/"
+    "/dashboard/my-courses/",
+    "/dashboard/enrolled-courses/"
   ];
 
   const isSidebarHidden = hideSidebarRoutes.some((route) =>

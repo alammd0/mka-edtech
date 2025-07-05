@@ -1,25 +1,28 @@
 const mongoose = require("mongoose");
 
-const subSectionSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
+const subSectionSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
 
-  description : {
-    type : String, 
-    required : true
-  },
+    description: {
+      type: String,
+      required: true,
+    },
 
-  timeDuration: {
+    timeDuration: {
     type: Number,
-    default: "0:00", 
+    default: 0, 
   },
 
-  videoURL: {
-    type: String,
-    required: true, 
+    videoURL: {
+      type: String,
+      required: true,
+    },
   },
-}, { timestamps: true }); 
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("SubSection", subSectionSchema);

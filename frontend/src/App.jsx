@@ -19,7 +19,8 @@ import Instructor from "./components/core/dashboard/Instructor";
 import EditProfileDetails from "./components/core/dashboard/profile/EditProfileDetails";
 import OneCourseDetails from "./components/core/dashboard/Instructor/CourseDetails/OneCourseDetails";
 import Courses from "./pages/Courses";
-import CourseDetails from "./pages/CourseDetails";
+import PublicCourseDetails from "./pages/PublicCourseDetails";
+import EnrolledCoursesDetails from "./components/core/dashboard/Student/EntrolledCourseDetails";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -29,27 +30,32 @@ function App() {
       <Navbar />
       <main>
         <Routes>
-
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/courses" element={<Courses/>} />
-          <Route path="/courses/course-details/:id" element={<CourseDetails />} />
+
+          <Route path="/courses" element={<Courses />} />
+          <Route
+            path="/courses/course-details/:id"
+            element={<PublicCourseDetails />}
+          />
 
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* Redirect /dashboard to /dashboard/my-profile */}
             <Route index element={<Navigate to="my-profile" replace />} />
-            <Route path="my-profile" element={
-              <Myprofile />
-            } />
-            <Route path="edit-profile-details" element = {<EditProfileDetails />} />
+            <Route path="my-profile" element={<Myprofile />} />
+            <Route
+              path="edit-profile-details"
+              element={<EditProfileDetails />}
+            />
 
             {/* Student-only routes */}
             {user?.accountType === ACCOUNT_TYPE.Student && (
               <>
                 <Route path="enrolled-courses" element={<EnrolledCourses />} />
+                <Route path="enrolled-courses/:id" element={<EnrolledCoursesDetails/>}/>
                 <Route path="purchase-history" element={<PurchaseHistory />} />
               </>
             )}
@@ -60,14 +66,12 @@ function App() {
                 <Route path="add-course" element={<AddCourse />} />
                 <Route path="add-section" element={<CourseBuilder />} />
                 <Route path="last-step" element={<Laststep />} />
-                <Route path="my-courses" element={<MyCourse/>} />
-                <Route path="my-courses/:id" element={<OneCourseDetails/>}/>
-                <Route path="instructor" element={<Instructor/>} />
+                <Route path="my-courses" element={<MyCourse />} />
+                <Route path="my-courses/:id" element={<OneCourseDetails />} />
+                <Route path="instructor" element={<Instructor />} />
               </>
             )}
-
           </Route>
-
         </Routes>
       </main>
     </div>

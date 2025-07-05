@@ -251,20 +251,32 @@ exports.getallscourses = async (req, res) => {
       });
     }
 
-    const getDurationInMinutes = (durationStr) => {
-      if (typeof durationStr === "number") return durationStr;
-      const [mins, secs] = durationStr.split(":").map(Number);
-      return mins + secs / 60;
+    const getDurationInSeconds = (duration) => {
+      if (typeof duration === "number") {
+        return duration;
+      }
+      if (typeof duration === "string") {
+        const parts = duration.split(":").map(Number);
+        if (parts.length === 2) {
+          const [mins, secs] = parts;
+          if (!isNaN(mins) && !isNaN(secs)) {
+            return mins * 60 + secs;
+          }
+        }
+        const single_part = Number(duration);
+        if (!isNaN(single_part)) {
+          return single_part;
+        }
+      }
+      return 0;
     };
 
     const updatedCourses = courses.map((course) => {
-      let totalMinutes = 0;
+      let totalDurationInSeconds = 0;
 
       course.section.forEach((sec) => {
         sec.subSection.forEach((sub) => {
-          if (sub.timeDuration) {
-            totalMinutes += getDurationInMinutes(sub.timeDuration);
-          }
+          totalDurationInSeconds += getDurationInSeconds(sub.timeDuration);
         });
       });
 
@@ -278,7 +290,7 @@ exports.getallscourses = async (req, res) => {
         createBy: course.createBy,
         ratingAndReview: course.ratingAndReview,
         studentEnrollment: course.studentEnrollment,
-        totalDuration: totalMinutes.toFixed(2),
+        totalDuration: (totalDurationInSeconds / 60).toFixed(2),
       };
     });
 
@@ -334,25 +346,36 @@ exports.getcoursedetails = async (req, res) => {
       });
     }
 
-    // Helper to parse "mm:ss" duration strings
-    const getDurationInMinutes = (durationStr) => {
-      if (typeof durationStr === "number") return durationStr;
-      const [mins, secs] = durationStr.split(":").map(Number);
-      return mins + secs / 60;
+    const getDurationInSeconds = (duration) => {
+      if (typeof duration === "number") {
+        return duration;
+      }
+      if (typeof duration === "string") {
+        const parts = duration.split(":").map(Number);
+        if (parts.length === 2) {
+          const [mins, secs] = parts;
+          if (!isNaN(mins) && !isNaN(secs)) {
+            return mins * 60 + secs;
+          }
+        }
+        const single_part = Number(duration);
+        if (!isNaN(single_part)) {
+          return single_part;
+        }
+      }
+      return 0;
     };
 
     // Calculate total duration
-    let totalMinutes = 0;
+    let totalDurationInSeconds = 0;
     courseDetails.section.forEach((sec) => {
       sec.subSection.forEach((sub) => {
-        if (sub.timeDuration) {
-           totalMinutes += getDurationInMinutes(sub.timeDuration);
-        }
+        totalDurationInSeconds += getDurationInSeconds(sub.timeDuration);
       });
     });
 
     const courseData = courseDetails.toObject();
-    courseData.totalDuration = totalMinutes.toFixed(2);
+    courseData.totalDuration = (totalDurationInSeconds / 60).toFixed(2);
 
     return res.status(200).json({
       success: true,

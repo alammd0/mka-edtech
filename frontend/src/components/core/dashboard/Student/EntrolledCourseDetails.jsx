@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getcourseById } from "../../../../../services/opreation/courseAPI";
-import CourseDetailsVideo from "../../common/CourseDetails";
+import { getcourseById } from "../../../../services/opreation/courseAPI";
+import CourseDetailsVideo from "../common/CourseDetails";
 
-const OneCourseDetails = () => {
+const EnrolledCoursesDetails = () => {
   const [courseDetail, setCourseDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -63,4 +63,4 @@ const OneCourseDetails = () => {
   );
 };
 
-export default OneCourseDetails;
+export default EnrolledCoursesDetails;
