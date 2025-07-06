@@ -51,3 +51,10 @@ export const PaymentEndPoints = {
   GET_BUY_COURSE_API: `${backendUrl}/api/v1/payment/get-parches-course`,
   PAYMENT_HISTORY_API: `${backendUrl}/api/v1/payment/payment-history`
 };
+
+
+// ratingAndReview EndPoints 
+export const RatingAndReview = {
+  CREATE_RATING_AND_REVIEW_API : `${backendUrl}/api/v1/rating/create-rating-review`,
+  GET_ALL_RATING_AND_REVIEW_API : `${backendUrl}/api/v1/rating/get-all-rating-review`
+}

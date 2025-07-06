@@ -5,6 +5,7 @@ import { getAllCourse } from "../services/opreation/courseAPI";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Footer } from "../components/common/Footer";
+import ReviewAndRating from "../components/common/ReviewAndRating";
 
 const Courses = () => {
   const [allcourses, setAllCourses] = useState([]);
@@ -103,6 +104,10 @@ const Courses = () => {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="mt-[110px]">
+        <ReviewAndRating />
       </div>
 
       <div>

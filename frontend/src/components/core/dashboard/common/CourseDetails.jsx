@@ -1,4 +1,6 @@
 import ReactPlayer from "react-player";
+import RatingAndReviewModal from "../modal/RatingAndReviewModal";
+import { useState } from "react";
 
 import {
   MediaController,
@@ -16,14 +18,19 @@ import {
   MediaCaptionsButton,
 } from "media-chrome/react";
 import CourseSidebar from "./CourseSideBar";
+import { useSelector } from "react-redux";
 
 const CourseDetailsVideo = ({
   courseDetail,
   selectedVideo,
   setSelectedVideo,
 }) => {
-  console.log("Course - ", courseDetail);
-  console.log("selected Video -", selectedVideo);
+  const [ratingReviewModal, setRatingReviewModal] = useState(false);
+  const [ratingAndReview, setRatingAndReview] = useState("");
+
+  // console.log("Rating and Review Data - ", ratingAndReview);
+  const user = useSelector((state) => state.auth.user);
+  console.log("User ...", user);
 
   return (
     <div>
@@ -54,7 +61,7 @@ const CourseDetailsVideo = ({
                     boxShadow: "initial",
                   }}
                 />
-                
+
                 <MediaControlBar className="bg-richblack-300 flex items-center justify-between px-4 py-2 text-white text-sm gap-3 z-10">
                   <MediaPlayButton className="bg-transparent hover:bg-yellow-400/20 p-2 rounded transition" />
                   <MediaSeekBackwardButton
@@ -94,6 +101,16 @@ const CourseDetailsVideo = ({
                   <p className="bg-richblack-300 px-2 py-4 shadow rounded-md shadow-richblack-700 capitalize">
                     {courseDetail.instruction}
                   </p>
+
+                  {user.accountType === "Student" && (
+                    <button
+                      onClick={() => setRatingReviewModal(true)}
+                      className="bg-yellow-50 text-black px-4 py-2 rounded-md"
+                    >
+                      Add Review
+                    </button>
+                  )}
+                  
                 </div>
               </div>
             </div>
@@ -102,6 +119,13 @@ const CourseDetailsVideo = ({
           )}
         </div>
       </div>
+      {ratingReviewModal && (
+        <RatingAndReviewModal
+          courseId={courseDetail._id}
+          setRatingReviewModal={setRatingReviewModal}
+          setRatingAndReview={setRatingAndReview}
+        />
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import ActiveCount from "../components/core/about/ActiveCount";
 import { ButtonBtn } from "../components/core/home/ButtonBtn";
 import GetTouchFrom from "../components/core/about/GetTouchFrom";
 import { Footer } from "../components/common/Footer";
+import ReviewAndRating from "../components/common/ReviewAndRating";
 
 const About = () => {
   return (
@@ -200,9 +201,11 @@ const About = () => {
         />
       </div>
 
-      <h1 className="text-3xl font-bold text-center py-5">Review Section</h1>
+      <div className="mt-[110px]">
+        < ReviewAndRating/>
+      </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 };

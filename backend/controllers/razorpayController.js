@@ -79,6 +79,7 @@ exports.buyCourse = async (req, res) => {
       amount: paymentOrder.amount,
       currency: paymentOrder.currency,
     });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -100,10 +101,10 @@ exports.verifyPayment = async (req, res) => {
     } = req.body;
 
     const userId = req.user.id;
-    console.log("User ID - ", userId);
+    // console.log("User ID - ", userId);
 
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    console.log("Sign -", sign);
+    // console.log("Sign -", sign);
 
     // generated_signature = hmac_sha256( order_id + "|" + razorpay_payment_id,secret);
 
@@ -137,8 +138,8 @@ exports.verifyPayment = async (req, res) => {
     // here add course..
     const user = await User.findById(userId);
     const course = await Course.findById(courseId);
-    console.log("Course -", course);
-    console.log("user id -", user);
+    // console.log("Course -", course);
+    // console.log("user id -", user);
 
     if (!user || !course) {
       return res.status(404).json({
@@ -149,16 +150,16 @@ exports.verifyPayment = async (req, res) => {
 
     if (!user.courses.some((id) => id.equals(courseId))) {
       user.courses.push(new mongoose.Types.ObjectId(courseId));
-      console.log("Attempting to save user...");
+      // console.log("Attempting to save user...");
       await user.save();
-      console.log("User saved successfully.");
+      // console.log("User saved successfully.");
     }
 
     if (!course.studentEnrollment.some((id) => id.equals(userId))) {
       course.studentEnrollment.push(new mongoose.Types.ObjectId(userId));
-      console.log("Attempting to save course...");
+      // console.log("Attempting to save course...");
       await course.save();
-      console.log("Course saved successfully.");
+      // console.log("Course saved successfully.");
     }
 
     // Create a new payment record

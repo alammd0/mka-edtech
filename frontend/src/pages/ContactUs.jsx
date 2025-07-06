@@ -4,6 +4,7 @@ import { TiMessages } from "react-icons/ti";
 import { TbWorld } from "react-icons/tb";
 import { MdOutlineCallEnd } from "react-icons/md";
 import { Footer } from "../components/common/Footer";
+import ReviewAndRating from "../components/common/ReviewAndRating";
 
 const ContactUs = () => {
   return (
@@ -70,14 +71,13 @@ const ContactUs = () => {
             />
           </div>
         </div>
+      </div>
 
-        <div>
-          <h1>Review Section...</h1>
-        </div>
+      <div className="mt-[110px]">
+        <ReviewAndRating />
       </div>
 
       <Footer />
-
     </div>
   );
 };

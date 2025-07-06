@@ -17,6 +17,7 @@ import KnowYourProgress from "../assets/Images/Know_your_progress.png";
 import PlanYourLesson from "../assets/Images/Plan_your_lessons.png";
 import Instructor from "../assets/Images/Instructor.png";
 import { Footer } from "../components/common/Footer";
+import ReviewAndRating from "../components/common/ReviewAndRating";
 
 export const Home = () => {
   return (
@@ -288,7 +289,7 @@ export const Home = () => {
             </p>
 
             <p className="text-richblack-300 font-inter">
-             Instructors from around the world teach millions of students on
+              Instructors from around the world teach millions of students on
               StudyNotion. We provide the tools and skills to teach what you
               love.
             </p>
@@ -302,13 +303,13 @@ export const Home = () => {
             </div>
           </div>
         </div>
-
-        <div className="mt-[110px] mb-28">
-          <h1 className = "text-3xl font-bold font-inter text-center capitalize">Review Form other Learner</h1>
-        </div>
       </div>
 
-      <Footer/>
+      <div className="mt-[110px] mb-28">
+        <ReviewAndRating />
+      </div>
+
+      <Footer />
     </div>
   );
 };

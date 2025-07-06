@@ -10,6 +10,7 @@ import { BsCameraVideoFill } from "react-icons/bs";
 import { IoIosTime } from "react-icons/io";
 import { Footer } from "../components/common/Footer";
 import { buyCourse } from "../services/opreation/paymentAPI";
+import ReviewAndRating from "../components/common/ReviewAndRating";
 
 const PublicCourseDetails = () => {
   const [courseDetails, setCourseDetails] = useState(null);
@@ -74,7 +75,7 @@ const PublicCourseDetails = () => {
 
       const data = response;
       const options = {
-        key: "rzp_test_OVzu1gByIvxtQY",
+        key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: courseDetails.price * 100,
         currency: "INR",
         name: "EdTech Platform",
@@ -120,17 +121,11 @@ const PublicCourseDetails = () => {
     }
   }
 
-  // const isEnrolled = courseDetails?.studentEnrollment?.includes(user?._id);
-  // const isAlreadyEnrolled = courseDetails?.studentEnrollment?.includes(userId)
-
   console.log("Student Enrollments:", courseDetails?.studentEnrollment);
-  // console.log("User ID:", user?._id);
 
   const isAlreadyEnrolled = courseDetails?.studentEnrollment?.some(
     (id) => id.toString() === user?._id?.toString()
   );
-
-  // console.log("Enrolled - ", isAlreadyEnrolled);
 
   return (
     <div className="mt-28">
@@ -139,7 +134,7 @@ const PublicCourseDetails = () => {
           <div className="w-full h-screen flex items-center justify-center">
             <div className="spinner"></div>
           </div>
-        ) : courseDetails.length === 0 ? (
+        ) : courseDetails ? (
           <div className="flex flex-col gap-8">
             <div className="relative flex items-center justify-between bg-richblack-800 p-6 rounded-lg shadow-lg">
               <div className="flex flex-col gap-2 w-8/12">
@@ -151,14 +146,15 @@ const PublicCourseDetails = () => {
                 </p>
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center text-yellow-400 gap-1">
-                    {renderStars(courseDetails.ratingAndReview?.length)}
+                    {renderStars(courseDetails?.ratingAndReview?.length)}
                     <span className="text-richblack-300 ml-2">
                       ({courseDetails.ratingAndReview.length} reviews)
                     </span>
                   </div>
                   <div>
                     <span className="text-richblack-300 ml-2 capitalize">
-                      {courseDetails.studentEnrollment?.length} students enrolled
+                      {courseDetails.studentEnrollment?.length} students
+                      enrolled
                     </span>
                   </div>
                 </div>
@@ -193,14 +189,10 @@ const PublicCourseDetails = () => {
                       </Link>
                     ) : (
                       <button
-                        onClick={
-                          user.accountType === "Student"
-                            ? buyCourseHandler
-                            : undefined
-                        }
-                        disabled={user.accountType !== "Student"}
+                        onClick={buyCourseHandler}
+                        disabled={user && user.accountType !== "Student"}
                         className={`px-4 py-1 rounded-xl w-full text-[16px] font-semibold bg-yellow-50 text-richblack-900 ${
-                          user.accountType !== "Student"
+                          user && user.accountType !== "Student"
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                         }`}
@@ -255,6 +247,10 @@ const PublicCourseDetails = () => {
         ) : (
           <p className="text-lg text-red-500">Course not found</p>
         )}
+
+        <div className="mt-[110px] mb-28">
+          <ReviewAndRating />
+        </div>
       </div>
 
       <div>
