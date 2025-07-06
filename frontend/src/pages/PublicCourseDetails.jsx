@@ -73,9 +73,11 @@ const PublicCourseDetails = () => {
         throw new Error("No response from server");
       }
 
+      console.log(import.meta.env.VITE_RAZORPAY_KEY_ID);
+
       const data = response;
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY,
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: courseDetails.price * 100,
         currency: "INR",
         name: "EdTech Platform",
