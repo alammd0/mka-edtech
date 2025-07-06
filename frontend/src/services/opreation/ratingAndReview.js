@@ -20,7 +20,7 @@ export const createRatingAndReview = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -35,6 +35,6 @@ export const getRatingAndReview = async () => {
 
         return response;
     } catch(error){
-        console.log(error);
+        console.error(error);
     }
 }

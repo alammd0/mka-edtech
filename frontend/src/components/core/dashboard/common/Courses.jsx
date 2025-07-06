@@ -4,7 +4,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const CommonCourses = ({ courseDetails }) => {
-  console.log("Course Details -", courseDetails);
+  // console.log("Course Details -", courseDetails);
   const user = useSelector((state) => state.auth.user);
   //   console.log(user);
 

@@ -35,7 +35,7 @@ const PurchaseHistory = () => {
     fetchPaymentHistory();
   }, [token]);
 
-  console.log(paymentHistory);
+  // console.log(paymentHistory);
 
   return (
     <div className="mt-10 bg-richblack-700 mr-4 shadow shadow-richblue-400 px-4 py-2 rounded-xl">

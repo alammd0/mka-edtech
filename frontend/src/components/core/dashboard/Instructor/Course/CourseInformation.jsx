@@ -34,7 +34,7 @@ const CourseInformation = () => {
           setCategory(response.data);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
 
@@ -64,9 +64,9 @@ const CourseInformation = () => {
       formData.append("thumbnail", thumbnail);
     }
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ":", pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //   console.error(pair[0] + ":", pair[1]);
+    // }
 
     const toastId = toast.loading("Please Wait.....");
     try {
@@ -81,7 +81,7 @@ const CourseInformation = () => {
       navigate("/dashboard/add-section");
 
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Course create Error");
     }
     toast.dismiss(toastId);

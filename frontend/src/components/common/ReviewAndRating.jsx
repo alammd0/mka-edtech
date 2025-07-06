@@ -15,7 +15,7 @@ const ReviewAndRating = () => {
       }
       setRatingAndReview(response.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -23,7 +23,7 @@ const ReviewAndRating = () => {
     fetchRatingAndReview();
   }, []);
 
-  console.log("Rating and review -", ratingAndReview);
+  // console.log("Rating and review -", ratingAndReview);
 
   const renderStars = (rating) => {
     const stars = [];

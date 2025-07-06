@@ -14,7 +14,7 @@ const UpdateProfilePicModal = ({ onClose }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log("Selected file:", file);
+    // console.log("Selected file:", file);
     setProfilePic(file);
     setPreviewURL(URL.createObjectURL(file));
   };

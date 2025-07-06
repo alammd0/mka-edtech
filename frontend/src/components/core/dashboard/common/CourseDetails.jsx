@@ -30,7 +30,7 @@ const CourseDetailsVideo = ({
 
   // console.log("Rating and Review Data - ", ratingAndReview);
   const user = useSelector((state) => state.auth.user);
-  console.log("User ...", user);
+  // console.log("User ...", user);
 
   return (
     <div>
@@ -110,7 +110,7 @@ const CourseDetailsVideo = ({
                       Add Review
                     </button>
                   )}
-                  
+
                 </div>
               </div>
             </div>

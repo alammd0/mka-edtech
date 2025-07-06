@@ -41,8 +41,8 @@ const EnrolledCoursesDetails = () => {
     fetchCourseDetails();
   }, [id]);
 
-  console.log("Course - ", courseDetail);
-  console.log("selected Video -", selectedVideo);
+  // console.log("Course - ", courseDetail);
+  // console.log("selected Video -", selectedVideo);
 
   return (
     <div>

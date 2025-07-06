@@ -81,7 +81,7 @@ exports.signup = async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(503).json({
       success: false,
       message: "signup Error, Please check details",
@@ -150,7 +150,7 @@ exports.login = async (req, res) => {
         token,
       });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(502).json({
       message: "Login Credential error",
     });
@@ -177,7 +177,7 @@ exports.getuser = async (req, res) => {
     });
     
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(503).json({
       message: "User not Fetch Successfully..",
       success: false,
@@ -232,7 +232,7 @@ exports.forgetPassword = async (req, res) => {
     });
     
   } catch (err) {
-    console.log(err);
+    console.err(err);
     return res.status(502).json({
       success: false,
       message: "Password Change error, Please Check...",

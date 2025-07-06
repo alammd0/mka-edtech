@@ -51,7 +51,7 @@ const Myprofile = () => {
     fetchProfile();
   }, [user._id, token]);
 
-  console.log(profileData);
+  // console.log(profileData);
 
   return (
     <div>

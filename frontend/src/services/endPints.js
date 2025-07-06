@@ -1,4 +1,5 @@
-export const backendUrl = "http://localhost:4000";
+// export const backendUrl = "http://localhost:4000";
+export const backendUrl = "https://mka-edtech.onrender.com";
 
 // User EndPoint
 export const UserEndPoints = {

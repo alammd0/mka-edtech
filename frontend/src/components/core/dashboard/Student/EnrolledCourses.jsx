@@ -10,7 +10,7 @@ const EnrolledCourses = () => {
   const [loading, setLoading] = useState(false);
   const [courseDetail, setCourseDetails] = useState([]);
   const token = useSelector((state) => state.auth.token);
-  console.log("Token", token);
+  // console.log("Token", token);
 
   const fetchCourse = async () => {
     const toastId = toast.loading("Please wait...");
@@ -24,11 +24,11 @@ const EnrolledCourses = () => {
         return;
       }
 
-      console.log("Purchase course...", response.data);
+      // console.log("Purchase course...", response.data);
       setCourseDetails(response.data);
       toast.success("Success load parches courses...");
     } catch (err) {
-      console.log("Error Find - ", err);
+      console.error("Error Find - ", err);
       toast.error(err.message);
     } finally {
       toast.dismiss(toastId);
@@ -40,7 +40,7 @@ const EnrolledCourses = () => {
     fetchCourse();
   }, [token]);
 
-  console.log(courseDetail);
+  // console.log(courseDetail);
 
   return (
     <div>

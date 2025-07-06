@@ -20,7 +20,7 @@ export const buyCourse = async (courseId, token) => {
       }
     );
 
-    console.log("response in api", response);
+    // console.log("response in api", response);
 
     if (!response) {
       throw new Error("No give response from server side...");
@@ -28,13 +28,13 @@ export const buyCourse = async (courseId, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 // verify-payment
 export const verifyPayment = async (data, token) => {
-  console.log("Verify Data - ", data);
+  // console.log("Verify Data - ", data);
 
   try {
     const response = await apiconnector("POST", VERIFY_PAYMENT_API, data, {
@@ -47,13 +47,13 @@ export const verifyPayment = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 // get-parches course
 export const getParchesCourse = async (token) => {
-  console.log("Token - ", token);
+  // console.log("Token - ", token);
   try {
     const response = await apiconnector("GET", GET_BUY_COURSE_API, null, {
       Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ export const getParchesCourse = async (token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -82,6 +82,6 @@ export const getpaymenthistory = async (token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

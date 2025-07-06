@@ -49,7 +49,7 @@ const AuthForm = ({ type }) => {
         const response = await signup(infoData);
         // console.log(response);
 
-        console.log("Singup Data - ", response);
+        // console.log("Singup Data - ", response);
 
          if (!response) {
           throw new Error("Not response..");
@@ -65,7 +65,7 @@ const AuthForm = ({ type }) => {
       const toastId = toast.loading("Please wait...");
       try {
         const response = await login(infoData);
-        console.log("response - ", response);
+        // console.log("response - ", response);
         if (!response) {
           throw new Error("Not response..");
         }
@@ -80,7 +80,7 @@ const AuthForm = ({ type }) => {
     }
   };
   
-  console.log("Error" , infoData);
+  // console.log("Error" , infoData);
 
   return (
     <div className="md:w-[50%] text-white space-y-4">

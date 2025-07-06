@@ -8,7 +8,7 @@ import { userLogout } from "../../../app/slice/authSlice";
 
 export const Sidebar = () => {
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  // console.log(user);
   const location = useLocation();
   const [logoutModal, setLogoutModal] = useState(false);
 
@@ -39,7 +39,7 @@ export const Sidebar = () => {
       toast.success("Logout User");
       toast.dismiss(toastId);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     toast.dismiss(toastId);
   };

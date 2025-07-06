@@ -94,7 +94,7 @@ const Section = () => {
       toast.success("Subsection deleted...");
       toast.dismiss(toastId);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Sub section deleting error");
       toast.dismiss(toastId);
     }

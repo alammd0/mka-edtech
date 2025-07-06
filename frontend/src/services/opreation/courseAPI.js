@@ -19,7 +19,7 @@ const {
 const { BUY_COURSE_API } = PaymentEndPoints;
 
 export const createCourse = async (data, token) => {
-  console.log("Token here - ", token);
+  // console.log("Token here - ", token);
   try {
     const response = await apiconnector("POST", CREATE_COURSE_API, data, {
       Authorization: `Bearer ${token}`,
@@ -41,14 +41,14 @@ export const createCourse = async (data, token) => {
 export const getAllCourse = async () => {
   try {
     const response = await apiconnector("GET", GET_ALL_COURSE_API);
-    console.log(response);
+    // console.log(response);
     if (!response || !response.data) {
       throw new Error("Here error - Please check....");
     }
 
     return response;
   } catch (error) {
-    console.log("Error - ", error);
+    console.error("Error - ", error);
   }
 };
 
@@ -65,7 +65,7 @@ export const getcourseById = async (courseId) => {
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -81,7 +81,7 @@ export const createSection = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -99,7 +99,7 @@ export const updateSection = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -121,13 +121,13 @@ export const deleteSection = async (sectionId, token) => {
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
 // Sub-Section
 export const createSubSection = async (data, token) => {
-  console.log("Data - ", data);
+  // console.log("Data - ", data);
 
   try {
     const response = await apiconnector("POST", CREATE_SUB_SECTION_API, data, {
@@ -141,7 +141,7 @@ export const createSubSection = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log("Error - ", error);
+    console.error("Error - ", error);
   }
 };
 
@@ -162,6 +162,6 @@ export const deleteSubsection = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

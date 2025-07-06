@@ -6,11 +6,11 @@ const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload
 exports.createSubsection = async (req, res) => {
   try {
 
-    console.log("Req ki data - ", req.body);
+    // console.log("Req ki data - ", req.body);
 
     const { sectionId, title, description } = req.body;
 
-    console.log(req.files);
+    // console.log(req.files);
 
     const video = req.files.video;
 
@@ -58,7 +58,7 @@ exports.createSubsection = async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(501).json({
       success: false,
       message: "Create Subsection error...",
@@ -106,7 +106,7 @@ exports.updateSubSection = async (req, res) => {
       data: subSection,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(502).json({
       success: false,
       message: "Update Course error",
@@ -141,7 +141,7 @@ exports.deleteSubsection = async (req, res) => {
       data: deleteSubsection,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(501).json({
       success: false,
       message: "Delete Section error",

@@ -20,7 +20,7 @@ exports.createcategory = async (req, res) => {
       message: "Category Create Succussfully",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(502).json({
       succuss: false,
       message: "Category Create error",
@@ -45,7 +45,7 @@ exports.getallcategory = async (req, res) => {
       data: allCategory,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(503).json({
       success: false,
       message: "Category Found Error",

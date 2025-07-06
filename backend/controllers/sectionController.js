@@ -39,7 +39,7 @@ exports.createSection = async (req, res) => {
         })
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(502).json({
             success : false,
             message : "Create Section error please...."
@@ -52,8 +52,8 @@ exports.updateSection = async (req, res) => {
     try{
         const {updatedName, sectionId} = req.body ; 
 
-        console.log("Section Name - ", updatedName);
-        console.log("SectionId = ", sectionId);
+        // console.log("Section Name - ", updatedName);
+        // console.log("SectionId = ", sectionId);
 
         const section = await Section.findByIdAndUpdate(
             sectionId,
@@ -71,7 +71,7 @@ exports.updateSection = async (req, res) => {
 
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(502).json({
             success : false,
             message : "Update Section Error, please"
@@ -84,7 +84,7 @@ exports.deleteSection = async (req, res) => {
     try{
 
         const { sectionId } = req.params
-        console.log("Section Id -  ", sectionId);
+        // console.log("Section Id -  ", sectionId);
 
 
         if(!sectionId){
@@ -95,7 +95,7 @@ exports.deleteSection = async (req, res) => {
         }
 
         const deleteSection = await Section.findByIdAndDelete({_id : sectionId});
-        console.log("Delete Section name - ", deleteSection);
+        // console.log("Delete Section name - ", deleteSection);
 
 
         await Course.updateMany(
@@ -112,7 +112,7 @@ exports.deleteSection = async (req, res) => {
 
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(502).json({
             success : false,
             message : "Delete Section error"

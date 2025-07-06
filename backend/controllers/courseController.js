@@ -18,7 +18,7 @@ exports.createcourse = async (req, res) => {
       req.body;
 
     const thumbnail = req.files.thumbnail;
-    console.log(thumbnail);
+    // console.log(thumbnail);
 
     // find user id;
     const userId = req.user.id;
@@ -100,7 +100,7 @@ exports.createcourse = async (req, res) => {
       data: createNewCourse,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(503).json({
       success: false,
       message: "Course Not Create, BCZ send error...",
@@ -112,7 +112,7 @@ exports.createcourse = async (req, res) => {
 exports.updatecourse = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("Course Id - ", id);
+    // console.log("Course Id - ", id);
 
     let { title, description, price, category, tag, whatWeLearn, instruction } =
       req.body;
@@ -206,7 +206,7 @@ exports.updatecourse = async (req, res) => {
       data: updateCourse,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(304).json({
       success: false,
       message: "Course Update Failed, Please Check",
@@ -454,7 +454,7 @@ exports.deletecourse = async (req, res) => {
       message: "Course delete successfully...",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(400).json({
       success: false,
       message: "not delete, check some error found",

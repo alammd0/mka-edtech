@@ -17,7 +17,7 @@ const PublicCourseDetails = () => {
   const { loading } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  // console.log(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const PublicCourseDetails = () => {
     fetchCourseDetails();
   }, [id]);
 
-  console.log(courseDetails);
+  // console.log(courseDetails);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -121,7 +121,7 @@ const PublicCourseDetails = () => {
     }
   }
 
-  console.log("Student Enrollments:", courseDetails?.studentEnrollment);
+  // console.log("Student Enrollments:", courseDetails?.studentEnrollment);
 
   const isAlreadyEnrolled = courseDetails?.studentEnrollment?.some(
     (id) => id.toString() === user?._id?.toString()

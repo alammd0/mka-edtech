@@ -3,7 +3,7 @@ import { FooterLinks, FooterLink2 } from "../../data/footer-links";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
-  FooterLink2.map((data) => console.log(data));
+  // FooterLink2.map((data) => console.log(data));
 
   return (
     <div className="bg-richblack-800 pt-20">

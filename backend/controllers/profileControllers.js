@@ -7,7 +7,7 @@ const { uploadImageToCloudinary } = require("../utils/Upload");
 exports.updatePassword = async (req, res) => {
   try {
     const id = req.user.id;
-    console.log("User Id - ", id);
+    // console.log("User Id - ", id);
 
     const { changePassword, confirmChangePassword } = req.body;
 
@@ -30,7 +30,7 @@ exports.updatePassword = async (req, res) => {
     const hasedChangePassword = await bcrypt.hash(changePassword, 10);
 
     const user = await User.findById(id);
-    console.log("User - ", user);
+    // console.log("User - ", user);
     user.password = hasedChangePassword;
     await user.save();
 
@@ -46,7 +46,7 @@ exports.updatePassword = async (req, res) => {
       message: "Password Change Successfully",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(503).json({
       success: false,
       message: "Password update error",
@@ -116,9 +116,9 @@ exports.updateProfile = async (req, res) => {
 exports.updatedProfilePic = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log("User Id - ", userId);
+    // console.log("User Id - ", userId);
 
-    console.log("Profile Pic - ", req.files);
+    // console.log("Profile Pic - ", req.files);
 
     if (!req.files || !req.files.profilePic) {
       return res.status(400).json({
@@ -164,7 +164,7 @@ exports.updatedProfilePic = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(503).json({
       success: false,
       message: "Profile Pic update error",

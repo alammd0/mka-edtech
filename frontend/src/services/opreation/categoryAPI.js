@@ -26,7 +26,7 @@ export const getallcategory = async () => {
     return response;
 
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error();
   }
 };

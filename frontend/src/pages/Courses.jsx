@@ -22,7 +22,7 @@ const Courses = () => {
         }
         setAllCourses(response.data);
       } catch (error) {
-        console.log("err message - ", error);
+        console.error("err message - ", error);
         const errorMessage =
           error?.response?.data?.message ||
           error?.message ||

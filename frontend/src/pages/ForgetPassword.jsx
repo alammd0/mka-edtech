@@ -57,7 +57,7 @@ const ForgetPassword = () => {
       } else {
         toast.error("An unexpected error occurred.");
       }
-      console.log("Error message -", error);
+      console.error("Error message -", error);
     } finally {
       toast.dismiss(toastId);
     }

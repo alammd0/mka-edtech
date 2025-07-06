@@ -40,22 +40,22 @@ const SubSection = ({ sectionId, onClose, onSubSectionAdd }) => {
     formData.append("video", subSectionData.video);
 
     // 👇 Add this to debug
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
+    // for (let [key, value] of formData.entries()) {
+    //   // console.log(`${key}:`, value);
+    // }
 
     const toastId = toast.loading("Please wait...");
 
     try {
       const response = await createSubSection(formData, token);
       if (!response) throw new Error("Error while creating subsection");
-      console.log(response.data.subSection);
+      // console.log(response.data.subSection);
       onSubSectionAdd(sectionId, response.data);
       onClose();
       toast.success("Course Created");
       toast.dismiss(toastId);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Subsection creation failed");
       toast.dismiss(toastId);
     }

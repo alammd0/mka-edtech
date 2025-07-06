@@ -8,7 +8,7 @@ const { SIGNUP_API, LOGIN_API, GET_USER_API, FORGET_PASSWORD_API } =
 const { UPDATE_PROFILE_API, UPDATE_PROFILE_PIC_API } = ProfileEndPoints;
 
 export const signup = async (data) => {
-  //   console.log("User info Data - ", data);
+  //   console.error("User info Data - ", data);
   try {
     let response = await apiconnector("POST", SIGNUP_API, data);
 
@@ -18,7 +18,7 @@ export const signup = async (data) => {
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -32,7 +32,7 @@ export const login = async (data) => {
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -48,7 +48,7 @@ export const getuser = async (data, token) => {
 
     return response;
   } catch (error) {
-    console.log("error");
+    console.error("error");
     throw new Error("Error fetching User details");
   }
 };
@@ -61,13 +61,13 @@ export const forgetPassword = async (data) => {
       return response;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 // update user details and profile details
 export const updateuserandprofile = async (data, token) => {
-  console.log("Here user and profile data - ", data);
+  // console.error("Here user and profile data - ", data);
 
   try {
     const response = await apiconnector("PUT", UPDATE_PROFILE_API, data, {
@@ -80,14 +80,14 @@ export const updateuserandprofile = async (data, token) => {
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     console.error("Error - ", err);
   }
 };
 
 // update user profile pic
 export const updateProfilePic = async (data, token) => {
-  console.log("Profile pic data - ", data);
+  // console.error("Profile pic data - ", data);
 
   try {
     const response = await apiconnector("PUT", UPDATE_PROFILE_PIC_API, data, {

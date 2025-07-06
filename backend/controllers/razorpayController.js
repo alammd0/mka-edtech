@@ -79,9 +79,9 @@ exports.buyCourse = async (req, res) => {
       amount: paymentOrder.amount,
       currency: paymentOrder.currency,
     });
-    
+
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Payment failed duce server error",
@@ -92,7 +92,7 @@ exports.buyCourse = async (req, res) => {
 // verify payment and course details in user courses
 exports.verifyPayment = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.error(req.body);
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -101,10 +101,10 @@ exports.verifyPayment = async (req, res) => {
     } = req.body;
 
     const userId = req.user.id;
-    // console.log("User ID - ", userId);
+    // console.error("User ID - ", userId);
 
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    // console.log("Sign -", sign);
+    // console.error("Sign -", sign);
 
     // generated_signature = hmac_sha256( order_id + "|" + razorpay_payment_id,secret);
 
@@ -138,8 +138,8 @@ exports.verifyPayment = async (req, res) => {
     // here add course..
     const user = await User.findById(userId);
     const course = await Course.findById(courseId);
-    // console.log("Course -", course);
-    // console.log("user id -", user);
+    // console.error("Course -", course);
+    // console.error("user id -", user);
 
     if (!user || !course) {
       return res.status(404).json({
@@ -150,16 +150,16 @@ exports.verifyPayment = async (req, res) => {
 
     if (!user.courses.some((id) => id.equals(courseId))) {
       user.courses.push(new mongoose.Types.ObjectId(courseId));
-      // console.log("Attempting to save user...");
+      // console.error("Attempting to save user...");
       await user.save();
-      // console.log("User saved successfully.");
+      // console.error("User saved successfully.");
     }
 
     if (!course.studentEnrollment.some((id) => id.equals(userId))) {
       course.studentEnrollment.push(new mongoose.Types.ObjectId(userId));
-      // console.log("Attempting to save course...");
+      // console.error("Attempting to save course...");
       await course.save();
-      // console.log("Course saved successfully.");
+      // console.error("Course saved successfully.");
     }
 
     // Create a new payment record
@@ -179,7 +179,7 @@ exports.verifyPayment = async (req, res) => {
       message: "Payment verified..",
     });
   } catch (error) {
-    console.log("Error", error);
+    console.error("Error", error);
     return res.status(500).json({
       success: false,
       message: "Payment verifications Failed",
@@ -267,7 +267,7 @@ exports.findParchesCourse = async (req, res) => {
       data: coursesWithDuration,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(500).json({
       success: false,
       message: "Not fetch purchases Course, due to server error...",
@@ -293,7 +293,7 @@ exports.findPaymentHistory = async (req, res) => {
       data: paymentHistory,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
       success: false,
       message: "fetch payment history failed...",

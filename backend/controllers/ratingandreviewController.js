@@ -6,7 +6,7 @@ const RatingAndReview = require("../models/RatingAndReview");
 // creating rating and review
 exports.createRatingAndReview = async (req, res) => {
   try {
-    console.log("Request Data -", req.body);
+    // console.log("Request Data -", req.body);
     const { courseId, review, rating } = req.body;
 
     if (!courseId || !review || !rating) {
@@ -77,7 +77,7 @@ exports.createRatingAndReview = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(502).json({
       success: false,
       message: "Creating rating and review error",
@@ -90,7 +90,7 @@ exports.updateRatingAndReview = async (req, res) => {
   try {
     // const { ratingAndReview } =
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(501).json({
       success: false,
       message: "Update rating and review error",
