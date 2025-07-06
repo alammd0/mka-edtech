@@ -18,7 +18,27 @@ const ratingAndreview = require("./routes/ratingandreview");
 const app = express();
 
 app.use(express.json());
-app.use(cors({ credentials: true }));
+const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://mka-edtech.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(cookies());
 app.use(express.urlencoded({ extended: true }));
 
