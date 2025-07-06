@@ -95,6 +95,7 @@ router.put(
   instructormiddleware,
   updateSubSection
 );
+
 router.delete(
   "/delete-sub-section",
   authentication,

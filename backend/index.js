@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookies = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const { cloudinaryConnect } = require("./config/cloudinary");
-const path = require("path");
+// const path = require("path");
 
 const DbConnection = require("./config/db");
 
@@ -40,12 +40,12 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/rating", ratingAndreview);
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+// // Serve static files
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`App Running at : ${PORT}`);
