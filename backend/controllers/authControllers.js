@@ -161,7 +161,7 @@ exports.login = async (req, res) => {
 exports.getuser = async (req, res) => {
   try {
     const userId = req.user.id;
-    const findUser = await User.findById(userId).select("-password").populate("profile").exec();
+    const findUser = await User.findById(userId).select("-password").populate("profile").populate("courseProgress").exec();
 
     if (!findUser) {
       return res.status(401).json({

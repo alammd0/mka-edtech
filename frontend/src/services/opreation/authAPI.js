@@ -36,9 +36,9 @@ export const login = async (data) => {
   }
 };
 
-export const getuser = async (data, token) => {
+export const getuser = async (token) => {
   try {
-    const response = await apiconnector("GET", GET_USER_API, data, {
+    const response = await apiconnector("GET", GET_USER_API, {
       Authorization: `Bearer ${token}`,
     });
 

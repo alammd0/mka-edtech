@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getcourseById } from "../../../../services/opreation/courseAPI";
@@ -9,7 +10,13 @@ const EnrolledCoursesDetails = () => {
   const [loading, setLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
+  const { user } = useSelector((state) => state.auth);
+
   const { id } = useParams();
+
+  const courseProgress = user?.courseProgress?.find(
+    (progress) => progress.course === id
+  );
 
   const fetchCourseDetails = async () => {
     setLoading(true);
@@ -53,6 +60,7 @@ const EnrolledCoursesDetails = () => {
       ) : (
         <div className="flex">
           <CourseDetailsVideo
+            courseProgress={courseProgress}
             courseDetail={courseDetail}
             selectedVideo={selectedVideo}
             setSelectedVideo={setSelectedVideo}

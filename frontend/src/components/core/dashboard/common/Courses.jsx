@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { formatDate } from "../../../../utils/date";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 const CommonCourses = ({ courseDetails }) => {
-  // console.log("Course Details -", courseDetails);
   const user = useSelector((state) => state.auth.user);
-  //   console.log(user);
 
   return (
     <div>
@@ -43,7 +43,6 @@ const CommonCourses = ({ courseDetails }) => {
                   <p className="text-richblack-300 mb-4">
                     {course.description}
                   </p>
-                  {}
                 </div>
 
                 <div className="flex justify-between items-center mb-4">
@@ -57,7 +56,20 @@ const CommonCourses = ({ courseDetails }) => {
                       ₹ {course.price}
                     </p>
                   ) : (
-                    ""
+                    <div style={{ width: 70, height: 70 }}>
+                      <CircularProgressbar
+                        value={course.progressPercentage || 0}
+                        text={`${(course.progressPercentage || 0)}%`}
+                        styles={buildStyles({
+                          pathColor: `rgba(62, 152, 199, ${
+                            (course.progressPercentage || 0)
+                          })`,
+                          textColor: "#f1f1f1",
+                          trailColor: "#d6d6d6",
+                          backgroundColor: "#3e98c7",
+                        })}
+                      />
+                    </div>
                   )}
                 </div>
 

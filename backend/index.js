@@ -14,6 +14,7 @@ const courseRoutes = require("./routes/courseRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const ratingAndreview = require("./routes/ratingandreview");
+const courseProgessRoutes = require("./routes/courseProgressRoutes");
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/rating", ratingAndreview);
+app.use("/api/v1/course-progress", courseProgessRoutes);
 
 // // Serve static files
 // app.use(express.static(path.join(__dirname, "../frontend/build")));

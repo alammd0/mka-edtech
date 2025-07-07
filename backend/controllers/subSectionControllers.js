@@ -1,17 +1,17 @@
+const Course = require("../models/Course");
+const CourseProgress = require("../models/CourseProgress");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
-const { UploadToCloudinary, uploadImageToCloudinary } = require("../utils/Upload");
+const User = require("../models/User");
+const {
+  UploadToCloudinary,
+  uploadImageToCloudinary,
+} = require("../utils/Upload");
 
 // create Subsection
 exports.createSubsection = async (req, res) => {
   try {
-
-    // console.log("Req ki data - ", req.body);
-
     const { sectionId, title, description } = req.body;
-
-    // console.log(req.files);
-
     const video = req.files.video;
 
     if (!title || !sectionId || !description || !video) {
@@ -34,6 +34,7 @@ exports.createSubsection = async (req, res) => {
     }
 
     const newSubSectionDetails = await SubSection.create({
+      section: sectionId,
       title,
       description,
       timeDuration: `${uploadedVideo.duration || 0}`,
@@ -56,7 +57,6 @@ exports.createSubsection = async (req, res) => {
       message: "Subsection created successfully",
       data: updatedSection,
     });
-
   } catch (err) {
     console.error(err);
     return res.status(501).json({
@@ -71,7 +71,7 @@ exports.updateSubSection = async (req, res) => {
   try {
     const { subSectionId, title, description } = req.body;
 
-    const subSection = await SubSection.findById({ _id : subSectionId });
+    const subSection = await SubSection.findById({ _id: subSectionId });
 
     if (!subSection) {
       return res.status(402).json({
@@ -145,6 +145,85 @@ exports.deleteSubsection = async (req, res) => {
     return res.status(501).json({
       success: false,
       message: "Delete Section error",
+    });
+  }
+};
+
+exports.markSubSectionCompleted = async (req, res) => {
+  try {
+    const { courseId, subSectionId } = req.body;
+    const userId = req.user.id;
+
+    if (!courseId || !subSectionId) {
+      return res.status(400).json({
+        message: "Please provide courseId and subSectionId",
+      });
+    }
+
+    // Find or create CourseProgress
+    let progress = await CourseProgress.findOne({
+      course: courseId,
+      user: userId,
+    });
+
+    if (!progress) {
+      progress = await CourseProgress.create({
+        user: userId,
+        course: courseId,
+        completedVideos: [subSectionId],
+      });
+
+      // console.log("Rech here")
+
+      // update user with courseProgress 
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            courseProgress: progress._id,
+          },
+        }
+      )
+
+      // console.log("reach here")
+
+    } else {
+      // Add subSectionId to completedVideos if not present
+      if (!progress.completedVideos.includes(subSectionId)) {
+        progress.completedVideos.push(subSectionId);
+      }
+    }
+
+    const course = await Course.findById(courseId).populate({
+      path: "section",
+      populate: {
+        path: "subSection",
+      },
+    });
+
+    const totalSubSections = course.section.reduce(
+      (acc, curr) => acc + curr.subSection.length,
+      0
+    );
+
+    const completedCount = progress.completedVideos.length;
+    console.log(completedCount);
+    const percentage =
+      totalSubSections > 0 ? (completedCount / totalSubSections) * 100 : 0;
+    console.log(percentage);
+    progress.progressPercentage = percentage.toFixed(2);
+
+    await progress.save();
+    res.status(200).json({
+      message: "SubSection marked as completed and progress updated",
+      progress: progress,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to mark SubSection completed",
+      error: error.message,
     });
   }
 };

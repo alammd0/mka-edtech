@@ -4,13 +4,12 @@ import { BsCameraVideoFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import RatingAndReviewModal from "../modal/RatingAndReviewModal";
 
-const CourseSidebar = ({ course, onVideoSelect }) => {
+import { FaCheckCircle } from "react-icons/fa";
+
+const CourseSidebar = ({ course, onVideoSelect, videoEnded, courseProgress }) => {
   const [openSections, setOpenSections] = useState(new Set());
   const [activeLectureId, setActiveLectureId] = useState(null);
   const user = useSelector((state) => state.auth.user);
-
-
-  // console.log("user -", user);
 
   const toggleSection = (sectionId) => {
     setOpenSections((prev) => {
@@ -27,6 +26,10 @@ const CourseSidebar = ({ course, onVideoSelect }) => {
   const handleLectureClick = (lecture) => {
     setActiveLectureId(lecture._id);
     onVideoSelect(lecture);
+  };
+
+  const isLectureCompleted = (lectureId) => {
+    return courseProgress?.completedVideos?.includes(lectureId);
   };
 
 
@@ -64,7 +67,18 @@ const CourseSidebar = ({ course, onVideoSelect }) => {
                         : "hover:text-yellow-300 hover:bg-richblack-300"
                     }`}
                 >
-                  <BsCameraVideoFill /> {lecture.title}
+                  <div className="flex items-center gap-2">
+                    <BsCameraVideoFill />
+                    <span>{lecture.title}</span>
+                    {isLectureCompleted(lecture._id) && (
+                      <FaCheckCircle className="text-green-500" />
+                    )}
+                  </div>
+                  {
+                    videoEnded && user && user?.role === "student" && (
+                      <RatingAndReviewModal lectureId={lecture._id} />
+                    )
+                  }
                 </li>
               ))}
             </ul>

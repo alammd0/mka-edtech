@@ -209,6 +209,7 @@ exports.findParchesCourse = async (req, res) => {
           },
         },
       })
+      .populate("courseProgress")
       .exec();
 
     const getDurationInSeconds = (duration) => {
@@ -231,14 +232,24 @@ exports.findParchesCourse = async (req, res) => {
       return 0;
     };
 
-    const coursesWithDuration = user.courses.map((course) => {
+    const coursesWithDurationAndProgress = user.courses.map((course) => {
       let totalDurationInSeconds = 0;
+      let totalSubSections = 0;
 
       course.section.forEach((section) => {
+        totalSubSections += section.subSection.length;
         section.subSection.forEach((sub) => {
           totalDurationInSeconds += getDurationInSeconds(sub.timeDuration);
         });
       });
+
+      const courseProgress = user.courseProgress.find(
+        (progress) => progress.course.toString() === course._id.toString()
+      );
+
+      const completedVideos = courseProgress ? courseProgress.completedVideos.length : 0;
+      console.log(`Course: ${course.title}, Completed Videos: ${completedVideos}, Total SubSections: ${totalSubSections}`);
+      const progressPercentage = totalSubSections > 0 ? (completedVideos / totalSubSections) * 100 : 0;
 
       const hours = Math.floor(totalDurationInSeconds / 3600);
       const minutes = Math.floor((totalDurationInSeconds % 3600) / 60);
@@ -251,6 +262,7 @@ exports.findParchesCourse = async (req, res) => {
       return {
         ...course.toObject(),
         totalDuration,
+        progressPercentage,
       };
     });
 
@@ -264,7 +276,10 @@ exports.findParchesCourse = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Our buying course are there",
-      data: coursesWithDuration,
+      data: {
+        coursesWithDuration: coursesWithDurationAndProgress,
+        user,
+      },
     });
   } catch (err) {
     console.error(err);

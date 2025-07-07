@@ -13,12 +13,18 @@ const subSectionSchema = new mongoose.Schema(
     },
 
     timeDuration: {
-    type: Number,
-    default: 0, 
-  },
+      type: Number,
+      default: 0,
+    },
 
     videoURL: {
       type: String,
+      required: true,
+    },
+
+    section: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Section",
       required: true,
     },
   },

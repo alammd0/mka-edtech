@@ -20,35 +20,84 @@ import {
 import CourseSidebar from "./CourseSideBar";
 import { useSelector } from "react-redux";
 
+import { markSubSectionAsComplete } from "../../../../services/opreation/courseAPI";
+
 const CourseDetailsVideo = ({
   courseDetail,
   selectedVideo,
   setSelectedVideo,
+  courseProgress,
 }) => {
   const [ratingReviewModal, setRatingReviewModal] = useState(false);
   const [ratingAndReview, setRatingAndReview] = useState("");
+  const [videoEnded, setVideoEnded] = useState(false);
 
-  // console.log("Rating and Review Data - ", ratingAndReview);
+  const { token } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth.user);
-  // console.log("User ...", user);
+
+  //
+  //   console.log("Progress - ", progress);
+  //   if (progress.playedSeconds >= progress.loadedSeconds * 0.8 && !videoEnded) {
+  //     setVideoEnded(true);
+  //     await markSubSectionAsComplete(
+  //       {
+  //         courseId: courseDetail._id,
+  //         subSectionId: selectedVideo._id,
+  //       },
+  //       token
+  //     );
+  //   }
+  // };
+
+  // ✅ Called repeatedly as video plays
+  const handleVideoProgress = async (progress) => {
+    console.log("Progress - ", progress);
+    // If watched at least 80% & not yet marked as ended
+    if (progress.playedSeconds >= progress.loadedSeconds * 0.8 && !videoEnded) {
+      setVideoEnded(true);
+      await markSubSectionAsComplete(
+        {
+          courseId: courseDetail._id,
+          subSectionId: selectedVideo._id,
+        },
+        token
+      );
+    }
+  };
+
+  // Called when video actually ends
+  const handleVideoEnded = async () => {
+    if (!videoEnded) {
+      setVideoEnded(true);
+      await markSubSectionAsComplete(
+        {
+          courseId: courseDetail._id,
+          subSectionId: selectedVideo._id,
+        },
+        token
+      );
+    }
+  };
 
   return (
     <div>
       <div className="flex">
         <CourseSidebar
+          courseProgress={courseProgress}
           course={courseDetail}
+          videoEnded={videoEnded}
           onVideoSelect={(video) => setSelectedVideo(video)}
           selectedVideo={selectedVideo}
         />
 
-        <div className="p-6 flex-4/5 bg-richblack-900 ml-[2%]">
+        <div className="p-6 flex-1 bg-richblack-900 ml-[2%]">
           {selectedVideo ? (
             <div className="flex flex-col gap-4">
               <h2 className="text-2xl font-bold mb-4 font-inter">
                 {selectedVideo?.title}
               </h2>
 
-              <MediaController className="relative w-full aspect-[16/9] mx-auto bg-richblack-800 rounded overflow-hidden">
+              <MediaController className="relative w-full max-w-full aspect-[16/9] mx-auto bg-richblack-800 rounded overflow-hidden">
                 <ReactPlayer
                   src={selectedVideo?.videoURL}
                   slot="media"
@@ -60,6 +109,8 @@ const CourseDetailsVideo = ({
                     borderRadius: "10px",
                     boxShadow: "initial",
                   }}
+                  onProgress={handleVideoProgress}
+                  onEnded={handleVideoEnded}
                 />
 
                 <MediaControlBar className="bg-richblack-300 flex items-center justify-between px-4 py-2 text-white text-sm gap-3 z-10">

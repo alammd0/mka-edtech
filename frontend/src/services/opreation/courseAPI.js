@@ -165,3 +165,21 @@ export const deleteSubsection = async (data, token) => {
     console.error(error);
   }
 };
+
+export const markSubSectionAsComplete = async (data, token) => {
+  console.log("Data - ", data);
+  try {
+    const response = await apiconnector(
+      "POST",
+      SubSectionEndPoints.MARK_SUBSECTION_COMPLETE_API,
+      data,
+
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

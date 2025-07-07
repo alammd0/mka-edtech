@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../../app/slice/authSlice";
 import { getParchesCourse } from "../../../../services/opreation/paymentAPI";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -10,7 +11,7 @@ const EnrolledCourses = () => {
   const [loading, setLoading] = useState(false);
   const [courseDetail, setCourseDetails] = useState([]);
   const token = useSelector((state) => state.auth.token);
-  // console.log("Token", token);
+  const dispatch = useDispatch();
 
   const fetchCourse = async () => {
     const toastId = toast.loading("Please wait...");
@@ -25,7 +26,8 @@ const EnrolledCourses = () => {
       }
 
       // console.log("Purchase course...", response.data);
-      setCourseDetails(response.data);
+      setCourseDetails(response.data.coursesWithDuration);
+      dispatch(setUser(response.data.user));
       toast.success("Success load parches courses...");
     } catch (err) {
       console.error("Error Find - ", err);

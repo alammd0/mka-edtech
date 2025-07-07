@@ -1,5 +1,5 @@
-// export const backendUrl = "http://localhost:4000";
-export const backendUrl = "https://mka-edtech.onrender.com";
+export const backendUrl = "http://localhost:4000";
+// export const backendUrl = "https://mka-edtech.onrender.com";
 
 // User EndPoint
 export const UserEndPoints = {
@@ -43,6 +43,7 @@ export const SubSectionEndPoints = {
   CREATE_SUB_SECTION_API: `${backendUrl}/api/v1/course/create-sub-section`,
   UPDATE_SUB_SECTION_API: `${backendUrl}/api/v1/course/update-sub-section`,
   DELETE_SUB_SECTION_API: `${backendUrl}/api/v1/course/delete-sub-section`,
+  MARK_SUBSECTION_COMPLETE_API: `${backendUrl}/api/v1/course/mark-subsection-completed`,
 };
 
 // payment endPoint

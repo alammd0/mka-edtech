@@ -23,6 +23,7 @@ const {
   createSubsection,
   updateSubSection,
   deleteSubsection,
+  markSubSectionCompleted
 } = require("../controllers/subSectionControllers");
 
 const {
@@ -103,6 +104,8 @@ router.delete(
   deleteSubsection
 );
 
+router.post("/mark-subsection-completed", authentication, usermiddleware, markSubSectionCompleted);
+
 // Category routes
 router.post(
   "/create-category",
@@ -110,6 +113,7 @@ router.post(
   instructormiddleware,
   createcategory
 );
+
 router.get("/get-category", getallcategory);
 
 module.exports = router;

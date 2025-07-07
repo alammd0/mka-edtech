@@ -6,7 +6,6 @@ exports.createSection = async (req, res) => {
     try{
 
         const { sectionName , courseId} = req.body ;
-
         if(!sectionName || !courseId){
             return res.status(502).json({
                 success : false,
@@ -16,7 +15,8 @@ exports.createSection = async (req, res) => {
 
         // here create section 
         const section = await Section.create({
-            sectionName : sectionName
+            sectionName : sectionName,
+            courseId : courseId
         });
 
         // after create update course section 
@@ -51,10 +51,6 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
     try{
         const {updatedName, sectionId} = req.body ; 
-
-        // console.log("Section Name - ", updatedName);
-        // console.log("SectionId = ", sectionId);
-
         const section = await Section.findByIdAndUpdate(
             sectionId,
             {
