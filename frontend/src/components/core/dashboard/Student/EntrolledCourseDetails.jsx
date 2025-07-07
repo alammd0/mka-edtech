@@ -28,7 +28,6 @@ const EnrolledCoursesDetails = () => {
       }
 
       setCourseDetails(response.data);
-
       // Auto select first video
       const firstSection = response.data?.section?.[0];
       const firstVideo = firstSection?.subSection?.[0];
@@ -44,12 +43,11 @@ const EnrolledCoursesDetails = () => {
     }
   };
 
+  console.log("Course Details -", courseDetail);
+
   useEffect(() => {
     fetchCourseDetails();
   }, [id]);
-
-  // console.log("Course - ", courseDetail);
-  // console.log("selected Video -", selectedVideo);
 
   return (
     <div>

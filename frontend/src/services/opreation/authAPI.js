@@ -38,9 +38,11 @@ export const login = async (data) => {
 
 export const getuser = async (token) => {
   try {
-    const response = await apiconnector("GET", GET_USER_API, {
+    const response = await apiconnector("GET", GET_USER_API, null, {
       Authorization: `Bearer ${token}`,
     });
+
+    console.log("Response - ", response);
 
     if (!response || !response.data) {
       throw new Error("Not given Response...");

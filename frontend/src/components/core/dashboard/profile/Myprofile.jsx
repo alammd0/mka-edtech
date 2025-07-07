@@ -9,7 +9,7 @@ import UpdateProfilePicModal from "./UpdateProfileModal";
 
 const Myprofile = () => {
   const token = useSelector((state) => state.auth.token);
-  const user = useSelector((state) => state.auth.user);
+  console.log(token);
 
   // function to find user details
   const [profileData, setProfileData] = useState(null);
@@ -25,18 +25,18 @@ const Myprofile = () => {
     setOpenProfileModal(false);
   }
 
-  // console.log(path.pathname.trim(1, 0));
-
   useEffect(() => {
     const fetchProfile = async () => {
       dispatch(setLoading(true));
       const toastId = toast.loading("Please Wait....");
       try {
-        const response = await getuser(user._id, token);
-
-        if (!response || !response.data) {
+        const response = await getuser(token);
+        console.log(response);
+        
+        if (!response) {
           throw new Error("Error inside use-effect while fetching user");
         }
+        console.log(response.data);
         setProfileData(response.data);
         toast.success("User Profile successfully...");
         toast.dismiss(toastId);
@@ -49,9 +49,9 @@ const Myprofile = () => {
     };
 
     fetchProfile();
-  }, [user._id, token]);
+  }, [token]);
 
-  // console.log(profileData);
+  console.log("Profile Data - ", profileData);
 
   return (
     <div>
