@@ -19,7 +19,7 @@ const CodingSection = () => {
   const lineCount = codeString.split("\n").length;
 
   return (
-    <div className="flex w-[50%] text-white rounded-md font-mono text-sm leading-relaxed p-4 shadow-md bg-color-code shadow-richblack-700">
+    <div className="flex lg:w-[50%]  w-full text-white rounded-md font-mono text-sm leading-relaxed p-4 shadow-md bg-color-code shadow-richblack-700">
       {/* Line Numbers */}
       <div className="text-right pr-4 select-none opacity-50">
         {Array.from({ length: lineCount }).map((_, i) => (

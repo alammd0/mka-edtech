@@ -23,6 +23,8 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "https://mka-edtech.vercel.app",
+  "https://mka-edtech.onrender.com",
+  "*"
 ];
 
 app.use(
@@ -61,12 +63,6 @@ app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/rating", ratingAndreview);
 app.use("/api/v1/course-progress", courseProgessRoutes);
 
-// // Serve static files
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
-// });
 
 app.listen(PORT, () => {
   console.log(`App Running at : ${PORT}`);

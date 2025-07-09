@@ -22,7 +22,7 @@ import ReviewAndRating from "../components/common/ReviewAndRating";
 export const Home = () => {
   return (
     <div>
-      <div className="mt-[110px] w-9/12 mx-auto">
+      <div className="mt-[110px] lg:w-9/12 w-11/12 mx-auto">
         {/* section-01 */}
         <div className="flex flex-col items-center justify-center gap-7">
           <button
@@ -38,11 +38,11 @@ export const Home = () => {
             </Link>
           </button>
 
-          <div className="flex  flex-col gap-5">
-            <p className="text-3xl font-bold flex gap-2 font-inter text-center mx-auto">
+          <div className="flex flex-col gap-5">
+            <p className="text-3xl font-bold md:flex gap-2 font-inter text-center mx-auto">
               Empower Your Future with <HeighLight text="Coding Skills" />
             </p>
-            <p className="text-center md:max-w-[820px]">
+            <p className="md:text-center md:max-w-[820px]">
               With our online coding courses, you can learn at your own pace,
               from anywhere in the world, and get access to a wealth of
               resources, including hands-on projects, quizzes, and personalized
@@ -67,7 +67,7 @@ export const Home = () => {
 
         <div className="mt-10 mb-10 flex items-center justify-center ">
           <video
-            width="75%"
+            width="90%"
             autoPlay
             muted
             loop
@@ -79,8 +79,7 @@ export const Home = () => {
         </div>
 
         <div className="flex flex-col gap-20 mb-10 pt-20">
-          {/* Coding Section - 01*/}
-          <div className="flex gap-20">
+          <div className="lg:flex gap-20">
             <YourCoding
               txt1="Unlock your"
               hText="coding potential"
@@ -90,12 +89,12 @@ export const Home = () => {
               btn2="Learn More"
             />
 
+            <div className="h-10 lg:hidden block"></div>
             <CodingSection />
           </div>
 
           {/* Coding Section - 02 */}
-          <div className="flex gap-20">
-            <CodingSection />
+          <div className="lg:flex gap-20 flex-row-reverse">
             <YourCoding
               txt1="Start"
               hText="coding in seconds"
@@ -104,10 +103,13 @@ export const Home = () => {
               btn1="Continue lesson"
               btn2="Learn More"
             />
+
+            <div className="h-10 lg:hidden block"></div>
+            <CodingSection />
           </div>
         </div>
 
-        <div className="mt-40 mb-52 text-center relative">
+        <div className="mt-40 lg:h-[20px] h-[410px] mb-52 text-center relative">
           <p className="flex gap-2 text-3xl font-bold items-center justify-center font-inter">
             Unlock the <HeighLight text="Power of Code" />
           </p>
@@ -121,8 +123,10 @@ export const Home = () => {
       </div>
 
       {/* section - 02 */}
-      <div className="bg-richblack-5 pt-[130px] pb-28 bg-image">
-        <div className="flex gap-10 items-center justify-center mt-20">
+      <div className="bg-richblack-5 lg:pt-[150px] pb-28 bg-image">
+        <div className="h-14 lg:hidden block"></div>
+
+        <div className="flex flex-wrap items-center justify-center gap-10 mt-20">
           <ButtonBtn
             Text="Explore Full Catalog"
             link="/signup"
@@ -139,20 +143,20 @@ export const Home = () => {
       <div className="bg-richblack-5 pt-[5px] pb-20">
         <div className="mt-[110px] w-9/12 mx-auto">
           <div className="flex flex-col gap-24">
-            <div className="flex justify-between">
-              <div className="md:w-[50%] flex flex-col text-3xl font-bold capitalize text-richblack-900 font-inter">
+            <div className="flex flex-wrap justify-between items-center gap-y-8">
+              <div className="w-full md:w-[48%] flex flex-col text-3xl font-bold capitalize text-richblack-900 font-inter">
                 Get the skills you need for a{" "}
                 <HeighLight text="job that is in demand."></HeighLight>
               </div>
 
-              <div className="md:w-[50%] text-[16px] text-richblack-900 font-normal font-inter">
+              <div className="w-full md:w-[48%] text-[16px] text-richblack-900 font-normal font-inter">
                 The modern Edtech is the dictates its own terms. Today, to be a
                 competitive specialist requires more than professional skills.
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <div className="md:w-[50%] flex justify-center flex-col gap-10">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-12">
+              <div className="w-full md:w-[50%] flex justify-center flex-col gap-10">
                 <div className="flex items-center gap-6 pl-2">
                   <div className="bg-white p-3 rounded-full shadow-sm shadow-richblack-900">
                     <img className="h-6" src={Logo1} alt="Logo1" />
@@ -211,11 +215,11 @@ export const Home = () => {
                 </div>
               </div>
 
-              <div className="md:w-[50%] relative">
+              <div className="w-full md:w-[50%] relative">
                 <div className="rounded-md shadow-md shadow-pink-100">
                   <img className="rounded-md" src={Timeline} alt="No image" />
                 </div>
-                <div className="bg-green-700 absolute top-96 left-32 flex px-8 py-5 justify-between rounded-xl shadow-sm shadow-richblack-600">
+                <div className="bg-green-700 absolute bottom-5 left-1/2 -translate-x-1/2 md:left-32 md:top-96 md:bottom-auto md:translate-x-0 flex px-8 py-5 justify-between rounded-xl shadow-sm shadow-richblack-600">
                   <div className="flex flex-col mr-10 border-r-1 border-dotted  pr-10 text-center">
                     <p className="font-bold text-xl font-inter">10</p>
                     <p className=" font-normal text-xl font-inter">Years</p>
@@ -243,21 +247,21 @@ export const Home = () => {
               </p>
             </div>
 
-            <div className="relative flex justify-center gap-[-50px] mt-10">
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-[-50px] mt-10">
               <img
                 src={KnowYourProgress}
                 alt="know"
-                className="z-10 -rotate-6 shadow-lg rounded-lg w-[350px]"
+                className="z-10 -rotate-6 shadow-lg rounded-lg w-full sm:w-[300px] md:w-[350px]"
               />
               <img
                 src={CompareWithOther}
                 alt="compare"
-                className="z-20 rotate-0 shadow-2xl rounded-lg w-[350px]"
+                className="z-10 rotate-0 shadow-2xl rounded-lg w-full sm:w-[300px] md:w-[350px]"
               />
               <img
                 src={PlanYourLesson}
                 alt="plan"
-                className="z-10 rotate-6 shadow-lg rounded-lg w-[350px]"
+                className="z-10 rotate-6 shadow-lg rounded-lg w-full sm:w-[300px] md:w-[350px]"
               />
             </div>
 
@@ -272,9 +276,9 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="mt-[110px] w-9/12 mx-auto mb-[20px]">
-        <div className="flex justify-between gap-20">
-          <div className="md:w-[50%]">
+      <div className="mt-[110px] lg:w-9/12 w-11/12 w- mx-auto mb-[20px]">
+        <div className="flex flex-col md:flex-row justify-between gap-20 items-center">
+          <div className="w-full md:w-[50%]">
             <img
               src={Instructor}
               alt="person"
@@ -282,7 +286,7 @@ export const Home = () => {
             />
           </div>
 
-          <div className="md:w-[50%] w-full flex flex-col justify-center gap-5">
+          <div className="w-full md:w-[50%] flex flex-col justify-center gap-5">
             <p className="flex gap-2 text-3xl font-black font-inter">
               Become an
               <HeighLight text="instructor"></HeighLight>

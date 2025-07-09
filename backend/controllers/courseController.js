@@ -82,8 +82,7 @@ exports.createcourse = async (req, res) => {
       createBy: userId,
       thumbnail: imageUpload.secure_url,
     });
-
-    // after create update user course array
+    
     await User.findByIdAndUpdate(
       userId,
       {

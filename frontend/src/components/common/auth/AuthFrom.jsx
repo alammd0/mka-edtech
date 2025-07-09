@@ -83,7 +83,7 @@ const AuthForm = ({ type }) => {
   // console.log("Error" , infoData);
 
   return (
-    <div className="md:w-[50%] text-white space-y-4">
+    <div className="text-white space-y-4">
       <div>
         {type === "login" ? (
           <div className="flex flex-col gap-2">
@@ -145,7 +145,7 @@ const AuthForm = ({ type }) => {
         className="space-y-3 text-richblack-300"
       >
         {type === "signup" && (
-          <div className="flex gap-2 font-inter text-richblack-300">
+          <div className="md:flex md:gap-2 space-y-2 font-inter text-richblack-300">
             <div className="flex gap-1 text-richblack-300 flex-col w-full font-inter">
               <label htmlFor="firstName">
                 First Name <span className="text-red-500">*</span>
@@ -197,7 +197,7 @@ const AuthForm = ({ type }) => {
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="md:flex md:gap-2 space-y-2">
           <div
             className={`relative flex gap-1 flex-col ${
               type === "signup" ? "w-[100%]" : "w-full"
